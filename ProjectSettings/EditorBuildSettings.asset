@@ -9,9 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: b1cb6a694a85e244aacf633a376800d3
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Camera.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: fabf7daab8f8ead4fbc18c9ac01e9457, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f4d7be23b8e861742aaa60fe6f66d0b4, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: c64f76e19119dcf46ac3ad62b81b3b54, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
