@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float _shootingTimeLife = 1f;
-    [SerializeField] private float _impactTimeLife = 0.25f;
+    [SerializeField] float _timeLife = 0.75f;
 
     private void Start()
     {
-        Destroy(gameObject, _shootingTimeLife);
+        StartCoroutine(DestroyBullet());
     }
 
-    /*void OnTriggerEnter(Collider collider)
+    IEnumerator DestroyBullet()
     {
-        if (collider.gameObject.CompareTag("Enemy"))
+        yield return new WaitForSeconds(_timeLife);
         {
-			if (collider.gameObject.GetComponent<Enemy>() != null)
-			{
-				collider.gameObject.GetComponent<Enemy>().ReduceLife();
-			}
-            Destroy(gameObject, _impactTimeLife);
+            Destroy(gameObject);
         }
-    }*/
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.CompareTag("Enemy"))
+        {
+            Enemy enemy = collider.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(1);
+            }
+        }
+    }
 }
