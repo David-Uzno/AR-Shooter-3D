@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CameraFeed : MonoBehaviour
+public class CameraAR : MonoBehaviour
 {
     [SerializeField] private RawImage _imageCamera;
     private WebCamTexture _textureCamera;

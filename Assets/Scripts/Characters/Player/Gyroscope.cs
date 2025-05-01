@@ -6,12 +6,18 @@ using UnityEngine.UI;
 public class Gyroscope : MonoBehaviour
 {
     private UnityEngine.Gyroscope _gyroscope;
-    //[SerializeField] private Text _statusText;
 
-    private void EnsureGyroscopeEnabled()
+    void Start()
     {
-        if (_gyroscope == null || !_gyroscope.enabled)
+        StartCoroutine(EnsureGyroscopeEnabledCoroutine());
+    }
+
+    private IEnumerator EnsureGyroscopeEnabledCoroutine()
+    {
+        while (_gyroscope == null || !_gyroscope.enabled)
         {
+            Debug.Log("Verificando giroscopio");
+
             if (SystemInfo.supportsGyroscope)
             {
                 _gyroscope = Input.gyro;
@@ -19,18 +25,18 @@ public class Gyroscope : MonoBehaviour
             }
             else
             {
-                Debug.LogError("El dispositivo no soporta giroscopio.");
+                Debug.LogError("Giroscopio no soportado.");
+                yield break;
             }
+
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
     void Update()
     {
-        EnsureGyroscopeEnabled();
-
         Quaternion adjustedRotation = new Quaternion(-_gyroscope.attitude.x, -_gyroscope.attitude.y, _gyroscope.attitude.z, _gyroscope.attitude.w);
-        Vector3 eulerAngles = (Quaternion.Euler(90, 0, 0) * adjustedRotation).eulerAngles;
-        eulerAngles.z = 0;
-        transform.rotation = Quaternion.Euler(eulerAngles);
+        Vector2 eulerAngles = (Quaternion.Euler(90, 0, 0) * adjustedRotation).eulerAngles;
+        transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0);
     }
 }
