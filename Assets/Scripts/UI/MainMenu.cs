@@ -19,9 +19,4 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Collection");
     }
-
-    public void Exit()
-    {
-        Application.Quit();
-    }
 }
