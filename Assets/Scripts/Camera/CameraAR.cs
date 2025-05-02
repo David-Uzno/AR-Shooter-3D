@@ -12,25 +12,56 @@ public class CameraAR : MonoBehaviour
         {
             Debug.LogError("Falta referencia al RawImage");
         }
-        
+
         Application.RequestUserAuthorization(UserAuthorization.WebCam);
+
+        if (Application.HasUserAuthorization(UserAuthorization.WebCam))
+        {
+            WebCamDevice frontCamera = default;
+            bool hasFrontCamera = false;
+
+            foreach (var device in WebCamTexture.devices)
+            {
+                if (device.isFrontFacing)
+                {
+                    frontCamera = device;
+                    hasFrontCamera = true;
+                    break;
+                }
+            }
+
+            if (hasFrontCamera)
+            {
+                SelectCamera(frontCamera.name);
+            }
+            else if (WebCamTexture.devices.Length > 0)
+            {
+                SelectCamera(WebCamTexture.devices[0].name);
+            }
+            else
+            {
+                Debug.LogError("No se encontraron dispositivos de cámara.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No se otorgó autorización para usar la cámara.");
+        }
     }
 
     void OnGUI()
     {
-        if (!Application.HasUserAuthorization(UserAuthorization.WebCam))
-        {
-            GUILayout.Label("Esperando autorización para usar la cámara...");
-            return;
-        }
+        GUILayout.BeginVertical();
 
-        foreach (var divece in WebCamTexture.devices)
+        foreach (var device in WebCamTexture.devices)
         {
-            if (GUILayout.Button(divece.name))
+            if (GUILayout.Button(device.name))
             {
-                SelectCamera(divece.name);
+                SelectCamera(device.name);
             }
         }
+
+        GUILayout.EndVertical();
     }
 
     void SelectCamera(string deviceName)
