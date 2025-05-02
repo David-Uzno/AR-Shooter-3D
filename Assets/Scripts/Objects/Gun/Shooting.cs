@@ -23,7 +23,7 @@ public class Shooting : MonoBehaviour
 
 	private void Fire()
 	{
-		if (_playerInput.actions["Attack"].ReadValue<float>() > 0)
+		if (_playerInput.actions["Interact"].ReadValue<float>() > 0)
 		{
 			if (Time.time > _shotRateTime)
 			{
