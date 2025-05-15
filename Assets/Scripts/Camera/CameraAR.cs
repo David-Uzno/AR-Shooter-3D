@@ -17,22 +17,22 @@ public class CameraAR : MonoBehaviour
 
         if (Application.HasUserAuthorization(UserAuthorization.WebCam))
         {
-            WebCamDevice frontCamera = default;
-            bool hasFrontCamera = false;
+            WebCamDevice backCamera = default;
+            bool hasBackCamera = false;
 
             foreach (var device in WebCamTexture.devices)
             {
-                if (device.isFrontFacing)
+                if (!device.isFrontFacing)
                 {
-                    frontCamera = device;
-                    hasFrontCamera = true;
+                    backCamera = device;
+                    hasBackCamera = true;
                     break;
                 }
             }
 
-            if (hasFrontCamera)
+            if (hasBackCamera)
             {
-                SelectCamera(frontCamera.name);
+                SelectCamera(backCamera.name);
             }
             else if (WebCamTexture.devices.Length > 0)
             {
@@ -72,7 +72,15 @@ public class CameraAR : MonoBehaviour
         }
 
         _textureCamera = new WebCamTexture(deviceName);
-        _textureCamera.Play();
-        _imageCamera.texture = _textureCamera;
+
+        if (_textureCamera != null && _textureCamera.isReadable)
+        {
+            _textureCamera.Play();
+            _imageCamera.texture = _textureCamera;
+        }
+        else
+        {
+            Debug.LogError($"La cámara seleccionada ({deviceName}) no es compatible con los formatos requeridos.");
+        }
     }
 }

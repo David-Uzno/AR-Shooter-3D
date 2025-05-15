@@ -407,7 +407,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 31268316}
   _playerInput: {fileID: 31268315}
-  _verificationAttempts: 10
 --- !u!1 &177346932
 GameObject:
   m_ObjectHideFlags: 0
