@@ -1,70 +1,50 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class CameraAR : MonoBehaviour
 {
     [SerializeField] private RawImage _imageCamera;
     private WebCamTexture _textureCamera;
+    private WebCamDevice[] _devices;
+    private bool _waitingForPermission;
 
-    void Start()
+    private IEnumerator Start()
     {
-        if (_imageCamera == null)
+        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+        if (Application.HasUserAuthorization(UserAuthorization.WebCam)) yield return InitializeCamera();
+        else _waitingForPermission = true;
+    }
+
+    private void Update()
+    {
+        if (_waitingForPermission && Application.HasUserAuthorization(UserAuthorization.WebCam))
         {
-            Debug.LogError("Falta referencia al RawImage");
-        }
-
-        Application.RequestUserAuthorization(UserAuthorization.WebCam);
-
-        if (Application.HasUserAuthorization(UserAuthorization.WebCam))
-        {
-            WebCamDevice backCamera = default;
-            bool hasBackCamera = false;
-
-            foreach (var device in WebCamTexture.devices)
-            {
-                if (!device.isFrontFacing)
-                {
-                    backCamera = device;
-                    hasBackCamera = true;
-                    break;
-                }
-            }
-
-            if (hasBackCamera)
-            {
-                SelectCamera(backCamera.name);
-            }
-            else if (WebCamTexture.devices.Length > 0)
-            {
-                SelectCamera(WebCamTexture.devices[0].name);
-            }
-            else
-            {
-                Debug.LogError("No se encontraron dispositivos de cámara.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No se otorgó autorización para usar la cámara.");
+            _waitingForPermission = false;
+            StartCoroutine(InitializeCamera());
         }
     }
 
-    void OnGUI()
+    private IEnumerator InitializeCamera()
     {
-        GUILayout.BeginVertical();
-
-        foreach (var device in WebCamTexture.devices)
+        while ((_devices = WebCamTexture.devices).Length == 0)
         {
-            if (GUILayout.Button(device.name))
-            {
-                SelectCamera(device.name);
-            }
+            Debug.Log("No se encontraron dispositivos de cámara. Reintentando...");
+            yield return new WaitForSeconds(1f);
         }
 
-        GUILayout.EndVertical();
+        Debug.Log("Dispositivos de cámara encontrados.");
+        SelectCamera(System.Array.Find(_devices, d => !d.isFrontFacing).name);
     }
 
-    void SelectCamera(string deviceName)
+    private void OnGUI()
+    {
+        if (_devices == null) return;
+        foreach (var device in _devices)
+            if (GUILayout.Button(device.name)) SelectCamera(device.name);
+    }
+
+    private void SelectCamera(string deviceName)
     {
         if (_textureCamera != null)
         {
@@ -72,15 +52,24 @@ public class CameraAR : MonoBehaviour
         }
 
         _textureCamera = new WebCamTexture(deviceName);
+        _imageCamera.texture = _textureCamera;
+        _textureCamera.Play();
 
-        if (_textureCamera != null && _textureCamera.isReadable)
+        if (!_textureCamera.isPlaying)
         {
-            _textureCamera.Play();
-            _imageCamera.texture = _textureCamera;
+            Debug.Log("No se pudo iniciar la cámara: " + deviceName);
+            _imageCamera.texture = null;
+            _textureCamera = null;
         }
-        else
+    }
+
+    private void OnDisable()
+    {
+        if (_textureCamera != null)
         {
-            Debug.LogError($"La cámara seleccionada ({deviceName}) no es compatible con los formatos requeridos.");
+            _textureCamera.Stop();
         }
+        _textureCamera = null;
+        _waitingForPermission = false;
     }
 }
