@@ -9,8 +9,13 @@ public class TakePhotograph : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _statusText;
     [SerializeField] private Material _photoMaterial;
 
+    private int _photoCounter;
+
     private void Start()
     {
+        // Cargar el contador desde PlayerPrefs
+        _photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
+
         // Solicitar permiso de cámara al iniciar
         if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
         {
@@ -45,31 +50,56 @@ public class TakePhotograph : MonoBehaviour
         {
             if (path != null)
             {
-                UpdateStatus("Foto guardada en: " + path);
-                // Crear una textura a partir de la imagen capturada
-                Texture2D texture = NativeCamera.LoadImageAtPath(path, maxSize);
-                if (texture == null)
-                {
-                    Debug.Log("No se pudo cargar la textura desde " + path);
-                    return;
-                }
-
-                // Crear una copia del material y asignar la textura al BaseMap
-                if (_photoMaterial != null)
-                {
-                    Material newMaterial = new Material(_photoMaterial);
-                    newMaterial.mainTexture = texture;
-                    Debug.Log("Material creado con la textura asignada.");
-                }
-                else
-                {
-                    Debug.LogWarning("Material no asignado en el inspector.");
-                }
+                HandlePhotoTaken(path, maxSize);
             }
             else
             {
                 UpdateStatus("Error al tomar la fotografía.");
             }
         }, maxSize);
+    }
+
+    private void HandlePhotoTaken(string path, int maxSize)
+    {
+        UpdateStatus("Foto guardada en: " + path);
+        Texture2D texture = LoadTexture(path, maxSize);
+        if (texture == null)
+        {
+            Debug.Log("No se pudo cargar la textura desde " + path);
+            return;
+        }
+
+        SaveTexture(texture);
+        ApplyTextureToMaterial(texture);
+    }
+
+    private Texture2D LoadTexture(string path, int maxSize)
+    {
+        return NativeCamera.LoadImageAtPath(path, maxSize, false, true);
+    }
+
+    private void SaveTexture(Texture2D texture)
+    {
+        _photoCounter++;
+        PlayerPrefs.SetInt("PhotoCounter", _photoCounter);
+        PlayerPrefs.Save();
+
+        string savePath = Application.persistentDataPath + $"/SavedPhoto_{_photoCounter:D4}.png";
+        System.IO.File.WriteAllBytes(savePath, texture.EncodeToPNG());
+        Debug.Log("Textura guardada en: " + savePath);
+    }
+
+    private void ApplyTextureToMaterial(Texture2D texture)
+    {
+        if (_photoMaterial != null)
+        {
+            Material newMaterial = new Material(_photoMaterial);
+            newMaterial.mainTexture = texture;
+            Debug.Log("Material creado con la textura asignada.");
+        }
+        else
+        {
+            Debug.LogWarning("Material no asignado en el inspector.");
+        }
     }
 }

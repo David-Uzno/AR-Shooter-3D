@@ -15,7 +15,7 @@ public class Gyroscope : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Gyroscope not supported on this device.");
+            Debug.LogError("Giroscopio no es compatible con este dispositivo.");
             this.enabled = false;
         }
     }
@@ -26,7 +26,7 @@ public class Gyroscope : MonoBehaviour
         {
             if (!AttitudeSensor.current.enabled)
             {
-                Debug.Log("Attitude sensor not enabled. Enabling now.");
+                Debug.Log("Sensor de actitud no habilitado. Habilitando ahora.");
                 InputSystem.EnableDevice(AttitudeSensor.current);
             }
         }
