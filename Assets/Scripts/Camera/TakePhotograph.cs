@@ -1,6 +1,7 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Android;
-using TMPro;
 using UnityEngine.UI;
 
 public class TakePhotograph : MonoBehaviour
@@ -10,6 +11,8 @@ public class TakePhotograph : MonoBehaviour
     [SerializeField] private Material _photoMaterial;
 
     private int _photoCounter;
+
+    public static event Action<string> OnPhotoTaken;
 
     private void Start()
     {
@@ -71,6 +74,11 @@ public class TakePhotograph : MonoBehaviour
 
         SaveTexture(texture);
         ApplyTextureToMaterial(texture);
+
+        if (OnPhotoTaken != null)
+        {
+            OnPhotoTaken.Invoke(path);
+        }
     }
 
     private Texture2D LoadTexture(string path, int maxSize)
