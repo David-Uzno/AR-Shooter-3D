@@ -8,9 +8,14 @@ public class Photographs : MonoBehaviour
     [SerializeField] private GameObject _photographsPanel;
     public static event Action<Image> ImageClicked;
 
+    private void Start()
+    {
+        string savePath = FilePaths.SavedPhotosPath;
+    }
+
     public void OnImageClick(Image clickedImage)
     {
-        ImageClicked?.Invoke(clickedImage);
+        ImageClicked.Invoke(clickedImage);
 
         ScaleImage(clickedImage);
         CenterImage(clickedImage);

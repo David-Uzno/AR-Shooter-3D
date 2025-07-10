@@ -92,7 +92,7 @@ public class TakePhotograph : MonoBehaviour
         PlayerPrefs.SetInt("PhotoCounter", _photoCounter);
         PlayerPrefs.Save();
 
-        string savePath = Application.persistentDataPath + $"/SavedPhoto_{_photoCounter:D4}.png";
+        string savePath = FilePaths.SavedPhotosPath + $"{_photoCounter:D4}.png";
         System.IO.File.WriteAllBytes(savePath, texture.EncodeToPNG());
         Debug.Log("Textura guardada en: " + savePath);
     }

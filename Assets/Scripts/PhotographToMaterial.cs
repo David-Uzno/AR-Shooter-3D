@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System.Collections.Generic;
 
 public class PhotographToMaterial : MonoBehaviour
 {
@@ -29,12 +30,30 @@ public class PhotographToMaterial : MonoBehaviour
     #region File Management
     private string[] GetSavedPhotoFiles()
     {
-        return Directory.GetFiles(Application.persistentDataPath, "SavedPhoto_*.png");
+        int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
+        Debug.Log("Contador de fotos: " + photoCounter);
+
+        List<string> photoFiles = new List<string>();
+        for (int i = 1; i <= photoCounter; i++)
+        {
+            string photoPath = FilePaths.SavedPhotosPath + $"{i:D4}.png";
+
+            if (File.Exists(photoPath))
+            {
+                photoFiles.Add(photoPath);
+            }
+            else
+            {
+                Debug.LogWarning("Archivo no encontrado: " + photoPath);
+            }
+        }
+
+        return photoFiles.ToArray();
     }
 
     private string CreateMaterialsDirectory()
     {
-        string materialsDirectory = Path.Combine(Application.persistentDataPath, "GeneratedMaterials");
+        string materialsDirectory = FilePaths.GeneratedMaterialsPath;
         if (!Directory.Exists(materialsDirectory))
         {
             Directory.CreateDirectory(materialsDirectory);
@@ -83,25 +102,11 @@ public class PhotographToMaterial : MonoBehaviour
     private void SaveMaterialAsJson(Material material, string jsonFilePath)
     {
         Texture baseMapTexture = material.GetTexture("_BaseMap");
-        LogTextureDetails(baseMapTexture);
 
         string jsonContent = SerializeMaterialToJson(material, baseMapTexture, jsonFilePath);
         File.WriteAllText(jsonFilePath, jsonContent);
 
         AssignMaterialToGameObject(material);
-    }
-
-    private void LogTextureDetails(Texture baseMapTexture)
-    {
-        if (baseMapTexture != null)
-        {
-            Debug.Log("Textura asignada a _BaseMap: " + baseMapTexture.name);
-            Debug.Log("Tipo de textura: " + baseMapTexture.GetType().Name);
-        }
-        else
-        {
-            Debug.LogWarning("El material no tiene una textura asignada en _BaseMap.");
-        }
     }
 
     private string SerializeMaterialToJson(Material material, Texture baseMapTexture, string jsonFilePath)
@@ -110,7 +115,7 @@ public class PhotographToMaterial : MonoBehaviour
         if (baseMapTexture != null && baseMapTexture is Texture2D)
         {
             baseMapJson = "\"BaseMap\": {" +
-                "\"Path\": \"Assets/GeneratedMaterials/Textures/" + Path.GetFileNameWithoutExtension(jsonFilePath) + ".png\"," +
+                "\"Path\": \"Assets/Materials/Textures/" + Path.GetFileNameWithoutExtension(jsonFilePath) + ".png\"," +
                 "\"Width\": " + ((Texture2D)baseMapTexture).width + "," +
                 "\"Height\": " + ((Texture2D)baseMapTexture).height + "," +
                 "\"Format\": \"" + ((Texture2D)baseMapTexture).format.ToString() + "\"},";

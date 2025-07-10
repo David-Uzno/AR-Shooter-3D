@@ -8,15 +8,20 @@ public class Gallery : MonoBehaviour
 
     private void Awake()
     {
-        string path = Application.persistentDataPath;
+        string path = FilePaths.SavedPhotosPath;
         int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
 
         for (int i = 1; i <= photoCounter; i++)
         {
-            string photoPath = Path.Combine(path, $"SavedPhoto_{i:D4}.png");
+            string photoPath = path + $"{i:D4}.png";
+
             if (File.Exists(photoPath))
             {
                 CreateImage(photoPath);
+            }
+            else
+            {
+                Debug.LogWarning("Archivo no encontrado: " + photoPath);
             }
         }
     }
