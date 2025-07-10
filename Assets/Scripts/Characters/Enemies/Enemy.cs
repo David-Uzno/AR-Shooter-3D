@@ -4,6 +4,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Life")]
     [SerializeField] private float _life = 1f;
+    [SerializeField] private int _points = 50;
 
     [Header("Movement")]
     [SerializeField] private float _speed = 2f;
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _shotCoolDown = 2f;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Vector3 _targetPosition = Vector3.zero;
 
     private Vector3 _startPosition;
     private float _movementTimer;
@@ -46,7 +48,8 @@ public class Enemy : MonoBehaviour
 
             if (_rigidbody != null)
             {
-                _rigidbody.AddForce(transform.forward * _shotForce, ForceMode.Impulse);
+                Vector3 direction = (_targetPosition - _firePoint.position).normalized;
+                _rigidbody.AddForce(direction * _shotForce, ForceMode.Impulse);
             }
 
             _shotRateTime = Time.time + _shotCoolDown;
@@ -58,9 +61,10 @@ public class Enemy : MonoBehaviour
         _life -= damage;
         if (_life <= 0)
         {
-            if (Score.Instance != null)
+            Player player = Object.FindAnyObjectByType<Player>();
+            if (player != null)
             {
-                Score.Instance.AddPoints();
+                player.AddPoints(_points);
             }
             Destroy(gameObject);
         }

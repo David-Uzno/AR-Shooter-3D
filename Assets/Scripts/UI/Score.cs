@@ -1,13 +1,11 @@
 using TMPro;
 using UnityEngine;
 
-public class Score : MonoBehaviour
+public class ScoreText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _score;
-    [SerializeField] private int _points = 50;
 
-    private int _currentScore = 0;
-    public static Score Instance { get; private set; }
+    public static ScoreText Instance { get; private set; }
 
     private void Awake()
     {
@@ -21,9 +19,8 @@ public class Score : MonoBehaviour
         }
     }
 
-    public void AddPoints()
+    public void UpdateScore(int score)
     {
-        _currentScore += _points;
-        _score.text = _currentScore.ToString();
+        _score.text = score.ToString();
     }
 }
