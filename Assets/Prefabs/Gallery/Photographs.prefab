@@ -160,4 +160,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45a4ba8f00501342923536c43a42fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isFaceMode: 1
   _scaleMultiplier: 3
+  _photographsPanel: {fileID: 0}
