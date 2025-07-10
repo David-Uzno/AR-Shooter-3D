@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Photographs : MonoBehaviour
+public class InteractionPhotographs : MonoBehaviour
 {
     [SerializeField] private float _scaleMultiplier = 3f;
     [SerializeField] private GameObject _photographsPanel;
@@ -30,6 +30,11 @@ public class Photographs : MonoBehaviour
             image.transform.localScale = new Vector2(aspectRatio * _scaleMultiplier, 1 * _scaleMultiplier);
 
             image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        }
+
+        if (image.TryGetComponent<Button>(out Button button))
+        {
+            button.enabled = false;
         }
     }
 

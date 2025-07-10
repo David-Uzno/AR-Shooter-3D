@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.UI;
@@ -7,7 +6,6 @@ using UnityEngine.UI;
 public class TakePhotograph : MonoBehaviour
 {
     [SerializeField] private Button _takePhotoButton;
-    [SerializeField] private TextMeshProUGUI _statusText;
     [SerializeField] private Material _photoMaterial;
 
     private int _photoCounter;
@@ -23,11 +21,6 @@ public class TakePhotograph : MonoBehaviour
         if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
         {
             Permission.RequestUserPermission(Permission.Camera);
-            UpdateStatus("Solicitando permiso de cámara...");
-        }
-        else
-        {
-            UpdateStatus("Permiso de cámara concedido.");
         }
 
         // Asignar eventos a los botones
@@ -37,18 +30,8 @@ public class TakePhotograph : MonoBehaviour
         }
     }
 
-    private void UpdateStatus(string message)
-    {
-        if (_statusText != null)
-        {
-            _statusText.text = message;
-        }
-        Debug.Log(message);
-    }
-
     private void TakePicture(int maxSize)
     {
-        UpdateStatus("Tomando fotografía...");
         NativeCamera.TakePicture((path) =>
         {
             if (path != null)
@@ -57,14 +40,13 @@ public class TakePhotograph : MonoBehaviour
             }
             else
             {
-                UpdateStatus("Error al tomar la fotografía.");
+                Debug.LogWarning("Error al tomar la fotografía.");
             }
         }, maxSize);
     }
 
     private void HandlePhotoTaken(string path, int maxSize)
     {
-        UpdateStatus("Foto guardada en: " + path);
         Texture2D texture = LoadTexture(path, maxSize);
         if (texture == null)
         {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
-public class Gallery : MonoBehaviour
+public class ShowGallery : MonoBehaviour
 {
     [SerializeField] private GameObject _imagePrefab;
 
@@ -29,13 +29,13 @@ public class Gallery : MonoBehaviour
     private void OnEnable()
     {
         TakePhotograph.OnPhotoTaken += CreateImage;
-        Photographs.ImageClicked += DisableImages;
+        InteractionPhotographs.ImageClicked += DisableImages;
     }
 
     private void OnDisable()
     {
         TakePhotograph.OnPhotoTaken -= CreateImage;
-        Photographs.ImageClicked -= DisableImages;
+        InteractionPhotographs.ImageClicked -= DisableImages;
     }
 
     private void CreateImage(string photoPath)
