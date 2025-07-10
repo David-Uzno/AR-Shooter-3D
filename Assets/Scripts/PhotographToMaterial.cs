@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO;
 
 public class PhotographToMaterial : MonoBehaviour
 {
@@ -6,7 +7,7 @@ public class PhotographToMaterial : MonoBehaviour
 
     private void Start()
     {
-        string[] files = System.IO.Directory.GetFiles(Application.persistentDataPath, "SavedPhoto_*.png");
+        string[] files = Directory.GetFiles(Application.persistentDataPath, "SavedPhoto_*.png");
 
         foreach (string file in files)
         {
@@ -14,8 +15,13 @@ public class PhotographToMaterial : MonoBehaviour
             if (texture != null)
             {
                 Material newMaterial = new Material(_baseMaterial);
-                newMaterial.mainTexture = texture;
+                newMaterial.SetTexture("_BaseMap", texture);
+
                 Debug.Log("Material creado con la textura: " + file);
+
+                // Asignar el material a un GameObject para verificar visualmente
+                GameObject sphereObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                sphereObject.GetComponent<Renderer>().material = newMaterial;
             }
             else
             {
@@ -26,7 +32,7 @@ public class PhotographToMaterial : MonoBehaviour
 
     private Texture2D LoadTexture(string path)
     {
-        byte[] fileData = System.IO.File.ReadAllBytes(path);
+        byte[] fileData = File.ReadAllBytes(path);
         Texture2D texture = new Texture2D(2, 2);
         if (texture.LoadImage(fileData))
         {
