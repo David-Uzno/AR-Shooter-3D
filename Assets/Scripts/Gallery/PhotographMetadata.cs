@@ -4,7 +4,7 @@ using UnityEngine;
 public class PhotographMetadata : MonoBehaviour
 {
     public Texture2D InitialTexture { get; set; }
-    public DateTime CaptureDate { get; set; }
+    public DateTime AddedDate { get; set; }
 
     public static void SaveTexture(Texture2D texture, int photoCounter)
     {

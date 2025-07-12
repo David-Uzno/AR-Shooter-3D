@@ -7,6 +7,7 @@ public class InteractionPhotographs : MonoBehaviour
     [SerializeField] private bool _isFaceMode = true;
     [SerializeField] private float _scaleMultiplier = 3f;
     public static event Action<Image> ImageClicked;
+    public static event Action<string> PhotoNameSelected;
 
     public void OnImageClick(Image clickedImage)
     {
@@ -14,6 +15,30 @@ public class InteractionPhotographs : MonoBehaviour
 
         ScaleImage(clickedImage, _isFaceMode);
         CenterImage(clickedImage);
+
+        try
+        {
+            if (clickedImage.TryGetComponent<PhotographMetadata>(out PhotographMetadata metadata))
+            {
+                string[] nameParts = metadata.name.Split('_');
+                if (nameParts.Length > 1)
+                {
+                    string photoName = nameParts[1].Split('.')[0];
+                    if (PhotoNameSelected != null)
+                    {
+                        PhotoNameSelected.Invoke(photoName);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("El nombre de la fotografía no tiene el formato esperado: " + metadata.name);
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError("Error al procesar el nombre de la fotografía: " + exception.Message);
+        }
     }
 
     private void ScaleImage(Image image, bool _isFaceMode)
