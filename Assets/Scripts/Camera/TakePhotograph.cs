@@ -26,11 +26,11 @@ public class TakePhotograph : MonoBehaviour
         // Asignar eventos a los botones
         if (_takePhotoButton != null)
         {
-            _takePhotoButton.onClick.AddListener(() => TakePicture(512));
+            _takePhotoButton.onClick.AddListener(() => CapturePhoto(512));
         }
     }
 
-    private void TakePicture(int maxSize)
+    private void CapturePhoto(int maxSize)
     {
         NativeCamera.TakePicture((path) =>
         {
@@ -54,7 +54,7 @@ public class TakePhotograph : MonoBehaviour
             return;
         }
 
-        SaveTexture(texture);
+        PhotoSaving(texture);
         ApplyTextureToMaterial(texture);
 
         if (OnPhotoTaken != null)
@@ -63,20 +63,19 @@ public class TakePhotograph : MonoBehaviour
         }
     }
 
-    private Texture2D LoadTexture(string path, int maxSize)
-    {
-        return NativeCamera.LoadImageAtPath(path, maxSize, false, true);
-    }
-
-    private void SaveTexture(Texture2D texture)
+    private void PhotoSaving(Texture2D texture)
     {
         _photoCounter++;
         PlayerPrefs.SetInt("PhotoCounter", _photoCounter);
         PlayerPrefs.Save();
 
-        string savePath = FilePaths.SavedPhotosPath + $"{_photoCounter:D4}.png";
-        System.IO.File.WriteAllBytes(savePath, texture.EncodeToPNG());
-        Debug.Log("Textura guardada en: " + savePath);
+        PhotographMetadata.SaveTexture(texture, _photoCounter);
+        PhotographMetadata.SaveMetadata(texture, _photoCounter);
+    }
+
+    private Texture2D LoadTexture(string path, int maxSize)
+    {
+        return NativeCamera.LoadImageAtPath(path, maxSize, false, true);
     }
 
     private void ApplyTextureToMaterial(Texture2D texture)

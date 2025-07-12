@@ -18,9 +18,9 @@ public class InteractionPhotographs : MonoBehaviour
 
     private void ScaleImage(Image image, bool _isFaceMode)
     {
-        if (image.TryGetComponent<OriginalTexture>(out OriginalTexture originalTexture))
+        if (image.TryGetComponent<PhotographMetadata>(out PhotographMetadata originalTexture))
         {
-            Texture2D texture = originalTexture.Texture;
+            Texture2D texture = originalTexture.InitialTexture;
             if (_isFaceMode)
             {
                 ScaleImageAsFace(image, texture);

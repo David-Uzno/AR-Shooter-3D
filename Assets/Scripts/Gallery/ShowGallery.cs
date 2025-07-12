@@ -8,7 +8,7 @@ public class ShowGallery : MonoBehaviour
 
     private void Awake()
     {
-        string path = FilePaths.SavedPhotosPath;
+        string path = FilePaths.SavedPhotographsPath;
         int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
 
         for (int i = 1; i <= photoCounter; i++)
@@ -46,8 +46,8 @@ public class ShowGallery : MonoBehaviour
         GameObject newImage = Instantiate(_imagePrefab, transform);
         newImage.name = Path.GetFileName(photoPath);
 
-        OriginalTexture originalTextureComponent = newImage.AddComponent<OriginalTexture>();
-        originalTextureComponent.Texture = texture;
+        PhotographMetadata originalTextureComponent = newImage.AddComponent<PhotographMetadata>();
+        originalTextureComponent.InitialTexture = texture;
 
         if (newImage.TryGetComponent<Image>(out Image imageComponent))
         {

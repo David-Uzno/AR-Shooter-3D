@@ -36,7 +36,7 @@ public class PhotographToMaterial : MonoBehaviour
         List<string> photoFiles = new List<string>();
         for (int i = 1; i <= photoCounter; i++)
         {
-            string photoPath = FilePaths.SavedPhotosPath + $"{i:D4}.png";
+            string photoPath = FilePaths.SavedPhotographsPath + $"{i:D4}.png";
 
             if (File.Exists(photoPath))
             {

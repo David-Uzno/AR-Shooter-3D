@@ -4,5 +4,5 @@ public static class FilePaths
 {
     public static readonly string BaseFilePath = Application.persistentDataPath;
     public static readonly string GeneratedMaterialsPath = BaseFilePath + "/Materials";
-    public static readonly string SavedPhotosPath = BaseFilePath + "/Photographs/SavedPhoto_";
+    public static readonly string SavedPhotographsPath = BaseFilePath + "/Photographs/SavedPhoto_";
 }
