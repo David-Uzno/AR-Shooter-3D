@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _life: 10
+  _lifeBarUI: {fileID: 917401405}
 --- !u!1 &177346932
 GameObject:
   m_ObjectHideFlags: 0
