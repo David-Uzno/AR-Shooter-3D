@@ -2,23 +2,26 @@ Shader "Custom/OvalMaskShader"
 {
     Properties
     {
-        _MaskWidth("Mask Width", Float) = 0.75
-        _MaskHeight("Mask Height", Float) = 1.0
+        _MainTex ("Texture", 2D) = "white" {}
     }
-
     SubShader
     {
         Tags { "RenderType"="Transparent" }
+        LOD 100
+
         Pass
         {
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
             Cull Off
-            Lighting Off
 
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #include "UnityCG.cginc"
+
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
 
             struct appdata
             {
@@ -32,26 +35,26 @@ Shader "Custom/OvalMaskShader"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            float _MaskWidth;
-            float _MaskHeight;
-
-            v2f vert(appdata v)
+            v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv * _MainTex_ST.xy + _MainTex_ST.zw;
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                float2 normalizedUV = float2((i.uv.x - 0.5) / _MaskWidth, (i.uv.y - 0.5) / _MaskHeight);
-                float dist = length(normalizedUV);
-                if (dist > 0.5) discard;
-                return col;
+                float2 centerUV = i.uv - 0.5; // Centro del UV
+                float a = 0.5; // semieje horizontal (ajustable)
+                float b = 0.35; // semieje vertical (ajustable)
+
+                float ellipse = (centerUV.x * centerUV.x) / (a * a) + (centerUV.y * centerUV.y) / (b * b);
+
+                if (ellipse > 1.0)
+                    discard;
+
+                return tex2D(_MainTex, i.uv);
             }
             ENDCG
         }
