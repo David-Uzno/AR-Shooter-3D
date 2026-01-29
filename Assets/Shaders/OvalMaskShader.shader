@@ -3,6 +3,9 @@ Shader "Custom/OvalMaskShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Aspect ("Texture Aspect (w/h)", Float) = 1.0
+        _MaskScale ("Mask Scale", Float) = 1.0
+        _OvalRatio ("Oval W/H (0.8 = 80%)", Float) = 0.8
     }
     SubShader
     {
@@ -22,6 +25,9 @@ Shader "Custom/OvalMaskShader"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float _Aspect;
+            float _MaskScale;
+            float _OvalRatio;
 
             struct appdata
             {
@@ -45,16 +51,33 @@ Shader "Custom/OvalMaskShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 centerUV = i.uv - 0.5; // Centro del UV
-                float a = 0.5; // semieje horizontal (ajustable)
-                float b = 0.35; // semieje vertical (ajustable)
+                // Coordenadas centradas en (0,0)
+                float2 centerUV = i.uv - 0.5;
 
-                float ellipse = (centerUV.x * centerUV.x) / (a * a) + (centerUV.y * centerUV.y) / (b * b);
+                // Compensar la relación de aspecto de la textura para mantener la forma del óvalo (sin deformarlo).
+                float2 compensated = centerUV;
+                compensated.x *= _Aspect;
+
+                // Radios base del óvalo con proporción fija: width = _OvalRatio * height
+                // baseRadius toma la mitad del espacio UV disponible en la dimensión "alto"
+                float baseRadiusY = 0.5; // ry antes de escala
+                float baseRadiusX = baseRadiusY * _OvalRatio; // rx antes de escala
+
+                // Aplicar escala proporcional de máscara (misma escala para ambos ejes)
+                float rx = baseRadiusX * saturate(_MaskScale);
+                float ry = baseRadiusY * saturate(_MaskScale);
+
+                // Ecuación de la elipse (compensada en X)
+                float ellipse = (compensated.x * compensated.x) / (rx * rx) + (compensated.y * compensated.y) / (ry * ry);
 
                 if (ellipse > 1.0)
-                    discard;
+                {
+                    // Fuera de la máscara: completamente transparente
+                    return fixed4(0,0,0,0);
+                }
 
-                return tex2D(_MainTex, i.uv);
+                fixed4 mainTexColor = tex2D(_MainTex, i.uv);
+                return mainTexColor;
             }
             ENDCG
         }

@@ -82,7 +82,7 @@ public class InteractionPhotographs : MonoBehaviour
         }
 
         Material ovalMaterial = ChargeOvalMaterial();
-        ApplyOvalMask(image, ovalMaterial);
+        ApplyOvalMask(image, ovalMaterial, texture);
     }
 
     private Material ChargeOvalMaterial()
@@ -97,13 +97,26 @@ public class InteractionPhotographs : MonoBehaviour
         return new Material(ovalShader);
     }
 
-    private void ApplyOvalMask(Image image, Material ovalMaterial)
+    private void ApplyOvalMask(Image image, Material ovalMaterial, Texture2D texture)
     {
         if (ovalMaterial != null)
         {
             ovalMaterial.SetTexture("_MainTex", image.sprite.texture);
+
+            // Relación de aspecto de la textura entregada al shader para compensar la forma
+            float texAspect = (float)texture.width / texture.height;
+            ovalMaterial.SetFloat("_Aspect", texAspect);
+
+            // Proporción fija del óvalo: ancho modificable
+            const float ovalRatio = 0.5f;
+            ovalMaterial.SetFloat("_OvalRatio", ovalRatio);
+
+            // Calcular escala de máscara proporcional para que el óvalo quepa siempre en la imagen
+            float maskScale = Mathf.Min(1f, texAspect / ovalRatio);
+            ovalMaterial.SetFloat("_MaskScale", maskScale);
+
             image.material = ovalMaterial;
-            Debug.Log("Material oval con shader personalizado aplicado correctamente.");
+            Debug.Log($"Material oval aplicado. _Aspect={texAspect} _OvalRatio={ovalRatio} _MaskScale={maskScale}");
         }
     }
 
