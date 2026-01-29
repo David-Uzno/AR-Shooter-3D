@@ -26,10 +26,9 @@ public class Shooting : MonoBehaviour
 			{
 				// Instanciar Bala
 				GameObject newBullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
-				Rigidbody _rigidbody = newBullet.GetComponent<Rigidbody>();
-
+				
 				// Fuerza de Bala
-				if (_rigidbody != null)
+				if (newBullet.TryGetComponent<Rigidbody>(out var _rigidbody))
 				{
 					_rigidbody.AddForce(transform.forward * _shotForce, ForceMode.Impulse);
 				}

@@ -16,7 +16,7 @@ public class Gyroscope : MonoBehaviour
         else
         {
             Debug.LogError("Giroscopio no es compatible con este dispositivo.");
-            this.enabled = false;
+            enabled = false;
         }
     }
 
@@ -39,7 +39,7 @@ public class Gyroscope : MonoBehaviour
 
         // Leer los datos de attitudesensor
         Quaternion gyroAttitude = AttitudeSensor.current.attitude.ReadValue();
-        Quaternion adjustedRotation = new Quaternion(-gyroAttitude.x, -gyroAttitude.y, gyroAttitude.z, gyroAttitude.w);
+        Quaternion adjustedRotation = new(-gyroAttitude.x, -gyroAttitude.y, gyroAttitude.z, gyroAttitude.w);
         Vector2 moveInput = (Quaternion.Euler(90, 0, 0) * adjustedRotation).eulerAngles / 360f;
 
         // Aplicar input binding override

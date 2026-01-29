@@ -40,7 +40,7 @@ public class ShowGallery : MonoBehaviour
 
     private void CreateImage(string photoPath)
     {
-        Texture2D texture = new Texture2D(2, 2);
+        Texture2D texture = new(2, 2);
         texture.LoadImage(File.ReadAllBytes(photoPath));
 
         GameObject newImage = Instantiate(_imagePrefab, transform);
@@ -49,15 +49,14 @@ public class ShowGallery : MonoBehaviour
         PhotographMetadata originalTextureComponent = newImage.AddComponent<PhotographMetadata>();
         originalTextureComponent.InitialTexture = texture;
 
-        if (newImage.TryGetComponent<Image>(out Image imageComponent))
+        if (newImage.TryGetComponent(out Image imageComponent))
         {
             int size = Mathf.Min(texture.width, texture.height);
-            Rect cropRect = new Rect((texture.width - size) / 2, (texture.height - size) / 2, size, size);
+            Rect cropRect = new((texture.width - size) / 2, (texture.height - size) / 2, size, size);
             Sprite sprite = Sprite.Create(texture, cropRect, new Vector2(0.5f, 0.5f));
             imageComponent.sprite = sprite;
 
-            RectTransform rectTransform = newImage.GetComponent<RectTransform>();
-            if (rectTransform != null)
+            if (newImage.TryGetComponent<RectTransform>(out var rectTransform))
             {
                 rectTransform.localScale = new Vector3(1, 1, 1);
             }
@@ -68,13 +67,13 @@ public class ShowGallery : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (child.TryGetComponent<Image>(out Image imageComponent))
+            if (child.TryGetComponent(out Image imageComponent))
             {
                 imageComponent.enabled = imageComponent == clickedImage;
             }
         }
 
-        if (TryGetComponent<GridLayoutGroup>(out GridLayoutGroup gridLayoutGroup))
+        if (TryGetComponent(out GridLayoutGroup gridLayoutGroup))
         {
             gridLayoutGroup.enabled = false;
         }

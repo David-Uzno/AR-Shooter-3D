@@ -34,7 +34,7 @@ public class CameraAR : MonoBehaviour
         }
 
         Debug.Log("Dispositivos de cámara encontrados.");
-        SelectCamera(System.Array.Find(_devices, d => !d.isFrontFacing).name);
+        SelectCamera(System.Array.Find(_devices, cameraDevice => !cameraDevice.isFrontFacing).name);
     }
 
     private void OnGUI()
