@@ -21,3 +21,14 @@
 44	1212	7738971303461992	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	c9a5adb229be677f
 7	1288	7738971304346315	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	c8911ab4d6201f20
 1288	1399	7738971305530699	C:/Users/USER/Documents/GitHub/Unity/AR-Shooter-3D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2503d3t5/obj/arm64-v8a/libgame.so	d2d261fbb815f868
+64	195	7916010192557434	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	21804879370ec3ab
+195	487	7916010195382340	C:/Users/USER/Documents/GitHub/Unity/AR-Shooter-3D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2503d3t5/obj/arm64-v8a/libswappywrapper.so	ff8e001fb018da77
+46	617	7916010196746757	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	c199e42a26d5ab77
+15	618	7916010196746757	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	f3cb4dabced03d32
+23	654	7916010197080463	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	ea436a4795e78abd
+30	654	7916010197105682	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	dae7245120f3be54
+55	712	7916010197694296	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	4cd8a8f8d18dde40
+10	747	7916010198054360	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	cbdc4fffe7cf25d5
+38	861	7916010199170524	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	c9a5adb229be677f
+1	939	7916010199928051	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	c8911ab4d6201f20
+939	1031	7916010200847945	C:/Users/USER/Documents/GitHub/Unity/AR-Shooter-3D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2503d3t5/obj/arm64-v8a/libgame.so	d2d261fbb815f868

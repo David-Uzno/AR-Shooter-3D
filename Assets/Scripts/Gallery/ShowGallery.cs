@@ -1,6 +1,7 @@
+using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 
 public class ShowGallery : MonoBehaviour
 {
@@ -40,26 +41,50 @@ public class ShowGallery : MonoBehaviour
 
     private void CreateImage(string photoPath)
     {
-        Texture2D texture = new(2, 2);
-        texture.LoadImage(File.ReadAllBytes(photoPath));
-
-        GameObject newImage = Instantiate(_imagePrefab, transform);
-        newImage.name = Path.GetFileName(photoPath);
-
-        PhotographMetadata originalTextureComponent = newImage.AddComponent<PhotographMetadata>();
-        originalTextureComponent.InitialTexture = texture;
-
-        if (newImage.TryGetComponent(out Image imageComponent))
+        if (_imagePrefab == null)
         {
-            int size = Mathf.Min(texture.width, texture.height);
-            Rect cropRect = new((texture.width - size) / 2, (texture.height - size) / 2, size, size);
-            Sprite sprite = Sprite.Create(texture, cropRect, new Vector2(0.5f, 0.5f));
-            imageComponent.sprite = sprite;
+            Debug.LogWarning("Prefab de imagen no asignado.");
+            return;
+        }
 
-            if (newImage.TryGetComponent<RectTransform>(out var rectTransform))
+        if (!File.Exists(photoPath))
+        {
+            Debug.LogWarning($"Archivo no encontrado: {photoPath}");
+            return;
+        }
+
+        try
+        {
+            Texture2D texture = new(2, 2);
+            bool loaded = texture.LoadImage(File.ReadAllBytes(photoPath));
+            if (!loaded)
             {
-                rectTransform.localScale = new Vector3(1, 1, 1);
+                Debug.LogWarning($"LoadImage falló: {photoPath}");
+                return;
             }
+
+            GameObject newImage = Instantiate(_imagePrefab, transform);
+            newImage.name = Path.GetFileName(photoPath);
+
+            PhotographMetadata originalTextureComponent = newImage.AddComponent<PhotographMetadata>();
+            originalTextureComponent.InitialTexture = texture;
+
+            if (newImage.TryGetComponent(out Image imageComponent))
+            {
+                int size = Mathf.Min(texture.width, texture.height);
+                Rect cropRect = new((texture.width - size) / 2, (texture.height - size) / 2, size, size);
+                Sprite sprite = Sprite.Create(texture, cropRect, new Vector2(0.5f, 0.5f));
+                imageComponent.sprite = sprite;
+
+                if (newImage.TryGetComponent<RectTransform>(out var rectTransform))
+                {
+                    rectTransform.localScale = new Vector3(1, 1, 1);
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError(exception);
         }
     }
 

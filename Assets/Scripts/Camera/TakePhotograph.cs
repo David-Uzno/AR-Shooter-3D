@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.UI;
@@ -12,9 +13,12 @@ public class TakePhotograph : MonoBehaviour
 
     public static event Action<string> OnPhotoTaken;
 
+    private string _pendingPhotoPath;
+    private int _pendingMaxSize;
+    private bool _hasPendingPhoto;
+
     private void Start()
     {
-        // Cargar el contador desde PlayerPrefs
         _photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
 
         // Solicitar permiso de cámara al iniciar
@@ -23,20 +27,29 @@ public class TakePhotograph : MonoBehaviour
             Permission.RequestUserPermission(Permission.Camera);
         }
 
-        // Asignar eventos a los botones
         if (_takePhotoButton != null)
         {
             _takePhotoButton.onClick.AddListener(() => CapturePhoto(512));
         }
     }
 
+    private void Update()
+    {
+        if (!_hasPendingPhoto) return;
+
+        _hasPendingPhoto = false;
+        HandlePhotoTaken(_pendingPhotoPath, _pendingMaxSize);
+    }
+
     private void CapturePhoto(int maxSize)
     {
         NativeCamera.TakePicture((path) =>
         {
-            if (path != null)
+            if (!string.IsNullOrEmpty(path))
             {
-                HandlePhotoTaken(path, maxSize);
+                _pendingPhotoPath = path;
+                _pendingMaxSize = maxSize;
+                _hasPendingPhoto = true;
             }
             else
             {
@@ -54,10 +67,24 @@ public class TakePhotograph : MonoBehaviour
             return;
         }
 
+        string directory = FilePaths.SavedPhotographsPath;
+        Directory.CreateDirectory(directory);
+        string galleryPath = Path.Combine(directory, $"{_photoCounter + 1:D4}.png");
+
+        try
+        {
+            File.WriteAllBytes(galleryPath, texture.EncodeToPNG());
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError(exception);
+            return;
+        }
+
         PhotoSaving(texture);
         ApplyTextureToMaterial(texture);
 
-        OnPhotoTaken?.Invoke(path);
+        OnPhotoTaken?.Invoke(galleryPath);
     }
 
     private void PhotoSaving(Texture2D texture)
