@@ -14,7 +14,8 @@ public class BulletEnemy : BulletBase
     {
         if (collider.CompareTag("Player"))
         {
-            if (collider.TryGetComponent<Player>(out var player))
+            Player player = collider.GetComponent<Player>();
+            if (player != null)
             {
                 player.TakeDamage(1);
                 Destroy(gameObject);

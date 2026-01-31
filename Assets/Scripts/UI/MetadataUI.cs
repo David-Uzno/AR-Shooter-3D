@@ -26,7 +26,7 @@ public class MetadataUI : MonoBehaviour
         UpdateMetadata(photoName);
     }
 
-    [Serializable]
+    [System.Serializable]
     private class Metadata
     {
         public string CaptureDate;

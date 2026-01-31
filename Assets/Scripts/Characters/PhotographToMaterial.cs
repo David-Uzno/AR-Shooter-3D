@@ -33,7 +33,7 @@ public class PhotographToMaterial : MonoBehaviour
         int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
         Debug.Log("Contador de fotos: " + photoCounter);
 
-        List<string> photoFiles = new();
+        List<string> photoFiles = new List<string>();
         for (int i = 1; i <= photoCounter; i++)
         {
             string photoPath = FilePaths.SavedPhotographsPath + $"{i:D4}.png";
@@ -81,7 +81,7 @@ public class PhotographToMaterial : MonoBehaviour
 
     private Material CreateMaterial(Texture2D photoTexture)
     {
-        Material generatedMaterial = new(_baseMaterial);
+        Material generatedMaterial = new Material(_baseMaterial);
         generatedMaterial.SetTexture("_BaseMap", photoTexture);
         return generatedMaterial;
     }
@@ -91,7 +91,7 @@ public class PhotographToMaterial : MonoBehaviour
     private Texture2D LoadTexture(string filePath)
     {
         byte[] fileData = File.ReadAllBytes(filePath);
-        Texture2D texture = new(2, 2);
+        Texture2D texture = new Texture2D(2, 2);
         if (texture.LoadImage(fileData))
         {
             return texture;
@@ -112,13 +112,13 @@ public class PhotographToMaterial : MonoBehaviour
     private string SerializeMaterialToJson(Material material, Texture baseMapTexture, string jsonFilePath)
     {
         string baseMapJson = "";
-        if (baseMapTexture != null && baseMapTexture is Texture2D textureData)
+        if (baseMapTexture != null && baseMapTexture is Texture2D)
         {
             baseMapJson = "\"BaseMap\": {" +
                 "\"Path\": \"Assets/Materials/Textures/" + Path.GetFileNameWithoutExtension(jsonFilePath) + ".png\"," +
-                "\"Width\": " + textureData.width + "," +
-                "\"Height\": " + textureData.height + "," +
-                "\"Format\": \"" + textureData.format.ToString() + "\"},";
+                "\"Width\": " + ((Texture2D)baseMapTexture).width + "," +
+                "\"Height\": " + ((Texture2D)baseMapTexture).height + "," +
+                "\"Format\": \"" + ((Texture2D)baseMapTexture).format.ToString() + "\"},";
         }
 
         string colorJson = "";
