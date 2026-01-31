@@ -18,16 +18,13 @@ public class InteractionPhotographs : MonoBehaviour
 
         try
         {
-            if (clickedImage.TryGetComponent<PhotographMetadata>(out PhotographMetadata metadata))
+            if (clickedImage.TryGetComponent(out PhotographMetadata metadata))
             {
                 string[] nameParts = metadata.name.Split('_');
                 if (nameParts.Length > 1)
                 {
                     string photoName = nameParts[1].Split('.')[0];
-                    if (PhotoNameSelected != null)
-                    {
-                        PhotoNameSelected.Invoke(photoName);
-                    }
+                    PhotoNameSelected?.Invoke(photoName);
                 }
                 else
                 {
@@ -43,7 +40,7 @@ public class InteractionPhotographs : MonoBehaviour
 
     private void ScaleImage(Image image, bool _isFaceMode)
     {
-        if (image.TryGetComponent<PhotographMetadata>(out PhotographMetadata originalTexture))
+        if (image.TryGetComponent(out PhotographMetadata originalTexture))
         {
             Texture2D texture = originalTexture.InitialTexture;
             if (_isFaceMode)
@@ -56,7 +53,7 @@ public class InteractionPhotographs : MonoBehaviour
             }
         }
 
-        if (image.TryGetComponent<Button>(out Button button))
+        if (image.TryGetComponent(out Button button))
         {
             button.enabled = false;
         }
@@ -67,15 +64,15 @@ public class InteractionPhotographs : MonoBehaviour
         float aspectRatio = (float)texture.width / texture.height;
         image.transform.localScale = new Vector2(aspectRatio * _scaleMultiplier, 1 * _scaleMultiplier);
 
-        Rect rect = new Rect(0, 0, texture.width, texture.height);
+        Rect rect = new(0, 0, texture.width, texture.height);
         image.sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
 
-        if (image.TryGetComponent<Mask>(out Mask mask))
+        if (image.TryGetComponent(out Mask mask))
         {
             mask.showMaskGraphic = true;
         }
 
-        if (image.TryGetComponent<Image>(out Image img))
+        if (image.TryGetComponent(out Image img))
         {
             img.type = Image.Type.Sliced;
             img.preserveAspect = true;
@@ -130,7 +127,7 @@ public class InteractionPhotographs : MonoBehaviour
     
     private void CenterImage(Image image)
     {
-        if (image.canvas.TryGetComponent<RectTransform>(out RectTransform canvasRect))
+        if (image.canvas.TryGetComponent(out RectTransform canvasRect))
         {
             image.transform.position = canvasRect.transform.position;
         }

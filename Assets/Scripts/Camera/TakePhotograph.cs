@@ -57,10 +57,7 @@ public class TakePhotograph : MonoBehaviour
         PhotoSaving(texture);
         ApplyTextureToMaterial(texture);
 
-        if (OnPhotoTaken != null)
-        {
-            OnPhotoTaken.Invoke(path);
-        }
+        OnPhotoTaken?.Invoke(path);
     }
 
     private void PhotoSaving(Texture2D texture)
@@ -82,7 +79,7 @@ public class TakePhotograph : MonoBehaviour
     {
         if (_photoMaterial != null)
         {
-            Material newMaterial = new Material(_photoMaterial);
+            Material newMaterial = new(_photoMaterial);
             newMaterial.mainTexture = texture;
             Debug.Log("Material creado con la textura asignada.");
         }

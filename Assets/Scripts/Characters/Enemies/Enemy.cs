@@ -44,9 +44,8 @@ public class Enemy : MonoBehaviour
         if (Time.time > _shotRateTime)
         {
             GameObject newBullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
-            Rigidbody _rigidbody = newBullet.GetComponent<Rigidbody>();
-
-            if (_rigidbody != null)
+            
+            if (newBullet.TryGetComponent<Rigidbody>(out var _rigidbody))
             {
                 Vector3 direction = (_targetPosition - _firePoint.position).normalized;
                 _rigidbody.AddForce(direction * _shotForce, ForceMode.Impulse);
@@ -61,7 +60,7 @@ public class Enemy : MonoBehaviour
         _life -= damage;
         if (_life <= 0)
         {
-            Player player = Object.FindAnyObjectByType<Player>();
+            Player player = FindAnyObjectByType<Player>();
             if (player != null)
             {
                 player.AddPoints(_points);

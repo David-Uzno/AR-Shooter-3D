@@ -33,7 +33,7 @@ public class PhotographToMaterial : MonoBehaviour
         int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
         Debug.Log("Contador de fotos: " + photoCounter);
 
-        List<string> photoFiles = new List<string>();
+        List<string> photoFiles = new();
         for (int i = 1; i <= photoCounter; i++)
         {
             string photoPath = FilePaths.SavedPhotographsPath + $"{i:D4}.png";
@@ -81,7 +81,7 @@ public class PhotographToMaterial : MonoBehaviour
 
     private Material CreateMaterial(Texture2D photoTexture)
     {
-        Material generatedMaterial = new Material(_baseMaterial);
+        Material generatedMaterial = new(_baseMaterial);
         generatedMaterial.SetTexture("_BaseMap", photoTexture);
         return generatedMaterial;
     }
@@ -91,7 +91,7 @@ public class PhotographToMaterial : MonoBehaviour
     private Texture2D LoadTexture(string filePath)
     {
         byte[] fileData = File.ReadAllBytes(filePath);
-        Texture2D texture = new Texture2D(2, 2);
+        Texture2D texture = new(2, 2);
         if (texture.LoadImage(fileData))
         {
             return texture;

@@ -1,6 +1,6 @@
+using System;
 using TMPro;
 using UnityEngine;
-using System;
 
 public class MetadataUI : MonoBehaviour
 {
@@ -26,7 +26,7 @@ public class MetadataUI : MonoBehaviour
         UpdateMetadata(photoName);
     }
 
-    [System.Serializable]
+    [Serializable]
     private class Metadata
     {
         public string CaptureDate;
