@@ -21,7 +21,6 @@ public class TakePhotograph : MonoBehaviour
     {
         _photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
 
-        // Solicitar permiso de cámara al iniciar
         if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
         {
             Permission.RequestUserPermission(Permission.Camera);
@@ -67,24 +66,10 @@ public class TakePhotograph : MonoBehaviour
             return;
         }
 
-        string directory = FilePaths.SavedPhotographsPath;
-        Directory.CreateDirectory(directory);
-        string galleryPath = Path.Combine(directory, $"{_photoCounter + 1:D4}.png");
-
-        try
-        {
-            File.WriteAllBytes(galleryPath, texture.EncodeToPNG());
-        }
-        catch (Exception exception)
-        {
-            Debug.LogError(exception);
-            return;
-        }
-
         PhotoSaving(texture);
         ApplyTextureToMaterial(texture);
 
-        OnPhotoTaken?.Invoke(galleryPath);
+        OnPhotoTaken?.Invoke(GetSavedPhotoPath(_photoCounter));
     }
 
     private void PhotoSaving(Texture2D texture)
@@ -114,5 +99,12 @@ public class TakePhotograph : MonoBehaviour
         {
             Debug.LogWarning("Material no asignado en el inspector.");
         }
+    }
+
+    private string GetSavedPhotoPath(int index)
+    {
+        string directory = FilePaths.SavedPhotographsPath;
+        string fileName = $"SavedPhoto_{index:D4}.png";
+        return Path.Combine(directory, fileName);
     }
 }

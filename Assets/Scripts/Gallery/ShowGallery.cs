@@ -9,21 +9,11 @@ public class ShowGallery : MonoBehaviour
 
     private void Awake()
     {
-        string path = FilePaths.SavedPhotographsPath;
         int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
 
         for (int i = 1; i <= photoCounter; i++)
         {
-            string photoPath = path + $"{i:D4}.png";
-
-            if (File.Exists(photoPath))
-            {
-                CreateImage(photoPath);
-            }
-            else
-            {
-                Debug.LogWarning("Archivo no encontrado: " + photoPath);
-            }
+            CreateImage(GetSavedPhotoPath(i));
         }
     }
 
@@ -47,7 +37,8 @@ public class ShowGallery : MonoBehaviour
             return;
         }
 
-        if (!File.Exists(photoPath))
+        string resolvedPath = ResolvePhotoPath(photoPath);
+        if (string.IsNullOrEmpty(resolvedPath))
         {
             Debug.LogWarning($"Archivo no encontrado: {photoPath}");
             return;
@@ -56,15 +47,15 @@ public class ShowGallery : MonoBehaviour
         try
         {
             Texture2D texture = new(2, 2);
-            bool loaded = texture.LoadImage(File.ReadAllBytes(photoPath));
+            bool loaded = texture.LoadImage(File.ReadAllBytes(resolvedPath));
             if (!loaded)
             {
-                Debug.LogWarning($"LoadImage falló: {photoPath}");
+                Debug.LogWarning($"LoadImage falló: {resolvedPath}");
                 return;
             }
 
             GameObject newImage = Instantiate(_imagePrefab, transform);
-            newImage.name = Path.GetFileName(photoPath);
+            newImage.name = Path.GetFileName(resolvedPath);
 
             PhotographMetadata originalTextureComponent = newImage.AddComponent<PhotographMetadata>();
             originalTextureComponent.InitialTexture = texture;
@@ -102,5 +93,56 @@ public class ShowGallery : MonoBehaviour
         {
             gridLayoutGroup.enabled = false;
         }
+    }
+
+    private string GetSavedPhotoPath(int index)
+    {
+        string directory = FilePaths.SavedPhotographsPath;
+        string fileName = $"SavedPhoto_{index:D4}.png";
+        return Path.Combine(directory, fileName);
+    }
+
+    private string ResolvePhotoPath(string photoPath)
+    {
+        if (File.Exists(photoPath))
+        {
+            return photoPath;
+        }
+
+        string fileName = Path.GetFileName(photoPath);
+        if (string.IsNullOrEmpty(fileName))
+        {
+            return null;
+        }
+
+        string originalDirectory = Path.GetDirectoryName(photoPath);
+        string parentDirectory = !string.IsNullOrEmpty(originalDirectory)
+            ? Path.GetDirectoryName(originalDirectory)
+            : null;
+
+        string savedDirectory = FilePaths.SavedPhotographsPath;
+        string savedParentDirectory = !string.IsNullOrEmpty(savedDirectory)
+            ? Path.GetDirectoryName(savedDirectory)
+            : null;
+
+        string savedChildDirectory = !string.IsNullOrEmpty(originalDirectory)
+            ? Path.Combine(originalDirectory, "SavedPhoto_")
+            : null;
+
+        foreach (string directory in new[] { parentDirectory, savedDirectory, savedParentDirectory, savedChildDirectory })
+        {
+            if (string.IsNullOrEmpty(directory))
+            {
+                continue;
+            }
+
+            string candidatePath = Path.Combine(directory, fileName);
+            if (File.Exists(candidatePath))
+            {
+                return candidatePath;
+            }
+        }
+
+        return null;
     }
 }
