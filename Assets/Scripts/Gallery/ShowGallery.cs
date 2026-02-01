@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class ShowGallery : MonoBehaviour
 {
+    #region Fields
     [SerializeField] private GameObject _imagePrefab;
+    #endregion
 
+    #region Unity Methods
     private void Awake()
     {
         int photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
@@ -28,7 +31,9 @@ public class ShowGallery : MonoBehaviour
         TakePhotograph.OnPhotoTaken -= CreateImage;
         InteractionPhotographs.ImageClicked -= DisableImages;
     }
+    #endregion
 
+    #region Gallery Logic
     private void CreateImage(string photoPath)
     {
         if (_imagePrefab == null)
@@ -94,7 +99,9 @@ public class ShowGallery : MonoBehaviour
             gridLayoutGroup.enabled = false;
         }
     }
+    #endregion
 
+    #region Helpers
     private string GetSavedPhotoPath(int index)
     {
         string directory = FilePaths.SavedPhotographsPath;
@@ -145,4 +152,5 @@ public class ShowGallery : MonoBehaviour
 
         return null;
     }
+    #endregion
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class TakePhotograph : MonoBehaviour
 {
+    #region Fields
     [SerializeField] private Button _takePhotoButton;
     [SerializeField] private Material _photoMaterial;
 
@@ -16,7 +17,9 @@ public class TakePhotograph : MonoBehaviour
     private string _pendingPhotoPath;
     private int _pendingMaxSize;
     private bool _hasPendingPhoto;
+    #endregion
 
+    #region Unity Methods
     private void Start()
     {
         _photoCounter = PlayerPrefs.GetInt("PhotoCounter", 0);
@@ -39,7 +42,9 @@ public class TakePhotograph : MonoBehaviour
         _hasPendingPhoto = false;
         HandlePhotoTaken(_pendingPhotoPath, _pendingMaxSize);
     }
+    #endregion
 
+    #region Photo Logic
     private void CapturePhoto(int maxSize)
     {
         NativeCamera.TakePicture((path) =>
@@ -81,7 +86,9 @@ public class TakePhotograph : MonoBehaviour
         PhotographMetadata.SaveTexture(texture, _photoCounter);
         PhotographMetadata.SaveMetadata(texture, _photoCounter);
     }
+    #endregion
 
+    #region Helpers
     private Texture2D LoadTexture(string path, int maxSize)
     {
         return NativeCamera.LoadImageAtPath(path, maxSize, false, true);
@@ -107,4 +114,5 @@ public class TakePhotograph : MonoBehaviour
         string fileName = $"SavedPhoto_{index:D4}.png";
         return Path.Combine(directory, fileName);
     }
+    #endregion
 }
