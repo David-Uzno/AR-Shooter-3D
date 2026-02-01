@@ -83,8 +83,34 @@ public class TakePhotograph : MonoBehaviour
         PlayerPrefs.SetInt("PhotoCounter", _photoCounter);
         PlayerPrefs.Save();
 
+        EnsurePhotoDirectoryExists();
+
         PhotographMetadata.SaveTexture(texture, _photoCounter);
         PhotographMetadata.SaveMetadata(texture, _photoCounter);
+    }
+
+    private void EnsurePhotoDirectoryExists()
+    {
+        string path = FilePaths.SavedPhotographsPath;
+        string directory = path;
+        string fileName = Path.GetFileName(path);
+        if (Path.HasExtension(path) || (!string.IsNullOrEmpty(fileName) && fileName.StartsWith("SavedPhoto_", StringComparison.OrdinalIgnoreCase)))
+        {
+            string dir = Path.GetDirectoryName(path);
+            if (dir != null)
+            {
+                directory = dir;
+            }
+            else
+            {
+                directory = path;
+            }
+        }
+
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
     }
     #endregion
 
