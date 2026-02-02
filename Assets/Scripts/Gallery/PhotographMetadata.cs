@@ -19,7 +19,7 @@ public class PhotographMetadata : MonoBehaviour
         if (texture != null)
         {
             string metadataJson = "{" +
-                "\"CaptureDate\": \"" + DateTime.Now.ToString("o") + "\"," +
+                "\"CaptureDate\": \"" + DateTime.Now.ToString("o") + "\"" +
                 "}";
             System.IO.File.WriteAllText(metadataPath, metadataJson);
         }
