@@ -72,6 +72,16 @@ public class ShowGallery : MonoBehaviour
                 Sprite sprite = Sprite.Create(texture, cropRect, new Vector2(0.5f, 0.5f));
                 imageComponent.sprite = sprite;
 
+                // Asegura que el shader/material correcto se aplique en todas las plataformas
+                // Reemplaza "YourCustomMaterial" por el material que usas en el Editor
+#if UNITY_ANDROID
+                Material galleryMaterial = Resources.Load<Material>("OvalMaskShader");
+                if (galleryMaterial != null)
+                {
+                    imageComponent.material = galleryMaterial;
+                }
+#endif
+
                 if (newImage.TryGetComponent<RectTransform>(out var rectTransform))
                 {
                     rectTransform.localScale = new Vector3(1, 1, 1);
