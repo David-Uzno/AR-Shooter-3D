@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public abstract class BulletBase : MonoBehaviour
+public class BulletBase : MonoBehaviour
 {
-    protected float _timeLife = 1.5f;
+    [SerializeField] protected BulletData _bulletData;
+    private float _timeLife = 1.5f;
 
     private Coroutine _destroyCoroutine;
     private Rigidbody _rigidbody;
@@ -48,6 +49,11 @@ public abstract class BulletBase : MonoBehaviour
 
     protected virtual float GetTimeLife()
     {
+        if (_bulletData != null)
+        {
+            return _bulletData.TimeLife;
+        }
+        
         return _timeLife;
     }
 
@@ -69,7 +75,21 @@ public abstract class BulletBase : MonoBehaviour
         _rigidbody.angularVelocity = Vector3.zero;
     }
 
-    protected abstract void HandleCollision(Collider collider);
+    protected virtual void HandleCollision(Collider collider)
+    {
+        if (_bulletData == null) return;
+
+        int layer = collider.gameObject.layer;
+        bool isCharacterLayer = layer == LayerMask.NameToLayer("Character");
+
+        if (!isCharacterLayer) return;
+
+        if (collider.TryGetComponent(out Character character))
+        {
+            character.TakeDamage(_bulletData.Damage);
+            ReleaseBullet();
+        }
+    }
 
     private void OnTriggerEnter(Collider collider)
     {

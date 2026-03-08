@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1311968184236531014}
   - component: {fileID: 782766176999449054}
   - component: {fileID: -4739685139357208462}
-  - component: {fileID: 6360439810590806870}
+  - component: {fileID: 2244336283364413328}
   m_Layer: 0
   m_Name: BulletEnemy
   m_TagString: Untagged
@@ -235,7 +235,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6360439810590806870
+--- !u!114 &2244336283364413328
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2180694984978412101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f05a35f5db22b0549b06ba13488e7d11, type: 3}
+  m_Script: {fileID: 11500000, guid: 125318611cdf7ed42820fcaea0a1616a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeLife: 10
+  _bulletData: {fileID: 11400000, guid: 06f9db0eace185a40a65ab1a3fb9b2f3, type: 2}

@@ -221,9 +221,9 @@ GameObject:
   - component: {fileID: 31268318}
   - component: {fileID: 31268317}
   - component: {fileID: 31268314}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -245,7 +245,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -333,9 +333,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shotForce: 17.5
   _shotCoolDown: 0.25
-  _bulletPoolInitialSize: 5
   _firePoint: {fileID: 2122768960}
   _bulletPrefab: {fileID: 2180694984978412101, guid: 90c6907e808dbe94280f98cbd28d0cb4, type: 3}
+  _poolInitialSize: 5
 --- !u!54 &31268316
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4009,7 +4009,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerInput: {fileID: 1513617425}
-  _gameplayMap: Player
   _gameOverScene: GameOver
 --- !u!114 &1513617425
 MonoBehaviour:
@@ -5034,9 +5033,9 @@ GameObject:
   - component: {fileID: 2044432517}
   - component: {fileID: 2044432521}
   - component: {fileID: 2044432522}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Enemy
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5164,9 +5163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shotForce: 10
   _shotCoolDown: 1.5
-  _bulletPoolInitialSize: 5
   _firePoint: {fileID: 178448941}
   _bulletPrefab: {fileID: 2180694984978412101, guid: 026deaa4962f9a141a67f2d9be263398, type: 3}
+  _poolInitialSize: 5
 --- !u!1 &2050940391
 GameObject:
   m_ObjectHideFlags: 0

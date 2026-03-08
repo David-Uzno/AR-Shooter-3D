@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Inputs")]
     [SerializeField] private PlayerInput _playerInput;
-    [SerializeField] private string _gameplayMap = "Player";
 
     [Header("Scenes")]
     [SerializeField] private string _gameOverScene = "GameOver";

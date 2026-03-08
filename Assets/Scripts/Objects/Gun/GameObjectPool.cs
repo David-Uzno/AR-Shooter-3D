@@ -45,6 +45,7 @@ public static class GameObjectPool
             pooledObject = CreateInstance(pool, caller);
         }
 
+        pooledObject.transform.SetParent(null, true);
         pooledObject.transform.SetPositionAndRotation(position, rotation);
         pooledObject.SetActive(true);
         return pooledObject;
