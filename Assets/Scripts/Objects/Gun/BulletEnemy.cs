@@ -4,11 +4,7 @@ public class BulletEnemy : BulletBase
 {
     [SerializeField] private float _enemyTimeLife;
 
-    protected override void Start()
-    {
-        _timeLife = _enemyTimeLife;
-        base.Start();
-    }
+    protected override float GetTimeLife() => _enemyTimeLife;
 
     protected override void HandleCollision(Collider collider)
     {
@@ -17,7 +13,7 @@ public class BulletEnemy : BulletBase
             if (collider.TryGetComponent<Player>(out var player))
             {
                 player.TakeDamage(1);
-                Destroy(gameObject);
+                ReleaseBullet();
             }
         }
     }

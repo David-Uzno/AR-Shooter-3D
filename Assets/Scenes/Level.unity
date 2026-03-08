@@ -333,6 +333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shotForce: 17.5
   _shotCoolDown: 0.25
+  _bulletPoolInitialSize: 5
   _firePoint: {fileID: 2122768960}
   _bulletPrefab: {fileID: 2180694984978412101, guid: 90c6907e808dbe94280f98cbd28d0cb4, type: 3}
 --- !u!54 &31268316
@@ -5039,7 +5040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &2044432517
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5163,6 +5164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shotForce: 10
   _shotCoolDown: 1.5
+  _bulletPoolInitialSize: 5
   _firePoint: {fileID: 178448941}
   _bulletPrefab: {fileID: 2180694984978412101, guid: 026deaa4962f9a141a67f2d9be263398, type: 3}
 --- !u!1 &2050940391
