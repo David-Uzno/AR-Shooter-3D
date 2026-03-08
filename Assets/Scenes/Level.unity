@@ -5032,6 +5032,7 @@ GameObject:
   - component: {fileID: 2044432518}
   - component: {fileID: 2044432517}
   - component: {fileID: 2044432521}
+  - component: {fileID: 2044432523}
   - component: {fileID: 2044432522}
   m_Layer: 3
   m_Name: Enemy
@@ -5145,8 +5146,6 @@ MonoBehaviour:
   _lifeCurrent: 10
   _lifeMax: 10
   _points: 50
-  _speed: 2
-  _movementRange: 3
   _shooting: {fileID: 2044432522}
   _targetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &2044432522
@@ -5166,6 +5165,20 @@ MonoBehaviour:
   _firePoint: {fileID: 178448941}
   _bulletPrefab: {fileID: 2180694984978412101, guid: 026deaa4962f9a141a67f2d9be263398, type: 3}
   _poolInitialSize: 5
+--- !u!114 &2044432523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044432516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9ba0aeb1247f74fb0b684b608a3133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyAIConfiguration: {fileID: 11400000, guid: 130179f1cdd2acc43957fa238013e3d9, type: 2}
+  _playerTransform: {fileID: 31268312}
 --- !u!1 &2050940391
 GameObject:
   m_ObjectHideFlags: 0

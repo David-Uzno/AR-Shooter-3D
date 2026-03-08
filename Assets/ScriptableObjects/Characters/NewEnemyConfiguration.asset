@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80d719511d88d7840a6864d21408a3b6, type: 3}
-  m_Name: BulletPlayer
+  m_Script: {fileID: 11500000, guid: 590e7418cf6d70645bc4985974ab8d13, type: 3}
+  m_Name: NewEnemyConfiguration
   m_EditorClassIdentifier: 
-  _timeLife: 1.5
-  _damage: 1
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  _movementSpeed: 3
+  _movementRadius: 3
+  _movementAmplitude: 1.25
+  _directionChangeFrequency: 0.9
+  _minimumDistance: 2
+  _maximumDistance: 6
+  _trajectoryType: 0
+  _lookAtPlayer: 1
