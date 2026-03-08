@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewBulletData", menuName = "AR-Shooter/Bullet Data")]
+[CreateAssetMenu(fileName = "NewBulletData", menuName = "AR-Shooter/Objects/Bullet Data")]
 public class BulletData : ScriptableObject
 {
     [SerializeField] private float _timeLife = 1.5f;

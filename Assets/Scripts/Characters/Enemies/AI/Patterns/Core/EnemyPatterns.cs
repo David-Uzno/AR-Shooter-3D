@@ -65,7 +65,14 @@ public abstract class EnemyMovementPatternBase : IEnemyMovementPattern
 {
     public virtual void Initialize(Transform enemyTransform, Transform playerTransform, EnemyMovementSettings settings, ref EnemyMovementState state)
     {
-        state.DirectionSign = Random.value < 0.5f ? -1f : 1f;
+        if (Random.value < 0.5f)
+        {
+            state.DirectionSign = -1f;
+        }
+        else
+        {
+            state.DirectionSign = 1f;
+        }
         state.PhaseOffset = Random.Range(0f, Mathf.PI * 2f);
         state.SecondaryPhaseOffset = Random.Range(0f, Mathf.PI * 2f);
         state.RadialOffset = Random.Range(-settings.Amplitude * 0.35f, settings.Amplitude * 0.35f);
@@ -92,13 +99,36 @@ public abstract class EnemyMovementPatternBase : IEnemyMovementPattern
 
     protected static void BuildPlayerFrame(Transform playerTransform, out Vector3 forward, out Vector3 right, out Vector3 up)
     {
-        forward = playerTransform.forward.sqrMagnitude > 0.0001f ? playerTransform.forward.normalized : Vector3.forward;
-        up = playerTransform.up.sqrMagnitude > 0.0001f ? playerTransform.up.normalized : Vector3.up;
+        if (playerTransform.forward.sqrMagnitude > 0.0001f)
+        {
+            forward = playerTransform.forward.normalized;
+        }
+        else
+        {
+            forward = Vector3.forward;
+        }
+
+        if (playerTransform.up.sqrMagnitude > 0.0001f)
+        {
+            up = playerTransform.up.normalized;
+        }
+        else
+        {
+            up = Vector3.up;
+        }
+
         right = Vector3.Cross(up, forward).normalized;
 
         if (right.sqrMagnitude < 0.0001f)
         {
-            right = playerTransform.right.sqrMagnitude > 0.0001f ? playerTransform.right.normalized : Vector3.right;
+            if (playerTransform.right.sqrMagnitude > 0.0001f)
+            {
+                right = playerTransform.right.normalized;
+            }
+            else
+            {
+                right = Vector3.right;
+            }
         }
     }
 
