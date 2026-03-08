@@ -1,27 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    [Header("Status")]
-    [SerializeField] private byte _life = 10;
-    private byte _lifeMax;
-    private byte _lifeCurrent;
-
     [Header("Dependencies")]
     [SerializeField] private Image _lifeBarUI;
 
     private int _score = 0;
 
-    private void Start()
+    protected override void Start()
     {
-        _lifeMax = _life;
-        _lifeCurrent = _lifeMax;
+        base.Start();
     }
 
-    public void TakeDamage(byte damage)
+    private void Update()
     {
-        _lifeCurrent -= damage;
+        AddPoints(1);
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
 
         if (_lifeBarUI != null)
         {
@@ -36,7 +35,13 @@ public class Player : MonoBehaviour
 
     private void UpdateLifeBar()
     {
-        _lifeBarUI.fillAmount = (float)_lifeCurrent / _lifeMax;
+        _lifeBarUI.fillAmount = GetLifeNormalized();
+    }
+
+    protected float GetLifeNormalized()
+    {
+        if (_lifeMax == 0) return 0f;
+        return (float)_lifeCurrent / _lifeMax;
     }
 
     public void AddPoints(int points)

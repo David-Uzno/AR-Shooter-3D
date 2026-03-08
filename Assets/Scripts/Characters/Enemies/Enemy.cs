@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    [Header("Life")]
-    [SerializeField] private float _life = 1f;
+    [Header("Stats")]
     [SerializeField] private int _points = 50;
 
     [Header("Movement")]
@@ -21,8 +20,9 @@ public class Enemy : MonoBehaviour
     private float _movementTimer;
     private float _shotRateTime;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _startPosition = transform.position;
     }
 
@@ -55,17 +55,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
-        _life -= damage;
-        if (_life <= 0)
+        base.TakeDamage(damage);
+    }
+
+    protected override void Die()
+    {
+        Player player = FindAnyObjectByType<Player>();
+        if (player != null)
         {
-            Player player = FindAnyObjectByType<Player>();
-            if (player != null)
-            {
-                player.AddPoints(_points);
-            }
-            Destroy(gameObject);
+            player.AddPoints(_points);
         }
+        base.Die();
     }
 }
