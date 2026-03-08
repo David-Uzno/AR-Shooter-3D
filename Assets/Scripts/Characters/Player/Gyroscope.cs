@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Gyroscope : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private PlayerInput _playerInput;
+    private PlayerInput _playerInput;
+    
     private bool _isGyroscopeSupported = false;
+    private bool _missingInputLogged;
 
     private void Awake()
     {
@@ -17,6 +20,14 @@ public class Gyroscope : MonoBehaviour
         {
             Debug.LogError("Giroscopio no es compatible con este dispositivo.");
             enabled = false;
+        }
+    }
+
+    private void Start()
+    {
+        if (_playerInput == null && GameManager.Instance != null)
+        {
+            _playerInput = GameManager.Instance.GetPlayerInput();
         }
     }
 
@@ -34,8 +45,16 @@ public class Gyroscope : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_isGyroscopeSupported || AttitudeSensor.current == null || !AttitudeSensor.current.enabled)
+        if (_playerInput == null)
+        {
+            if (!_missingInputLogged)
+            {
+                _missingInputLogged = true;
+                enabled = false;
+                throw new InvalidOperationException("Gyroscope: PlayerInput es null. Proporciona uno desde GameManager.Instance.");
+            }
             return;
+        }
 
         // Leer los datos de attitudesensor
         Quaternion gyroAttitude = AttitudeSensor.current.attitude.ReadValue();

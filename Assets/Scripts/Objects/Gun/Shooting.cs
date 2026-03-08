@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Shooting : MonoBehaviour
 {
@@ -8,34 +7,25 @@ public class Shooting : MonoBehaviour
     [SerializeField] private float _shotCoolDown = 0.5f;
     private float _shotRateTime = 0;
 
-	[Header("Dependencies")]
-	[SerializeField] private PlayerInput _playerInput;
-	[SerializeField] private Transform _firePoint;
+    [Header("Dependencies")]
+    [SerializeField] private Transform _firePoint;
     [SerializeField] private GameObject _bulletPrefab;
 
-    private void Update()
+    public void Fire(Vector3 direction)
     {
-        Fire();
+        if (Time.time > _shotRateTime)
+        {
+            // Instanciar Bala
+            GameObject newBullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
+
+            // Fuerza de Bala
+            if (newBullet.TryGetComponent<Rigidbody>(out var _rigidbody))
+            {
+                _rigidbody.AddForce(direction * _shotForce, ForceMode.Impulse);
+            }
+
+            // Tiempo de Cooldown
+            _shotRateTime = Time.time + _shotCoolDown;
+        }
     }
-
-	private void Fire()
-	{
-		if (_playerInput.actions["Interact"].ReadValue<float>() > 0)
-		{
-			if (Time.time > _shotRateTime)
-			{
-				// Instanciar Bala
-				GameObject newBullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
-				
-				// Fuerza de Bala
-				if (newBullet.TryGetComponent<Rigidbody>(out var _rigidbody))
-				{
-					_rigidbody.AddForce(transform.forward * _shotForce, ForceMode.Impulse);
-				}
-
-				// Tiempo de Cooldown
-				_shotRateTime = Time.time + _shotCoolDown;
-			}
-		}
-	}
 }

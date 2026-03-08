@@ -1,21 +1,43 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Player : Character
 {
     [Header("Dependencies")]
     [SerializeField] private Image _lifeBarUI;
+    [SerializeField] private Shooting _shooting;
+    private PlayerInput _playerInput;
 
     private int _score = 0;
+
+    private void Awake()
+    {
+        if (GameManager.Instance != null)
+        {
+            _playerInput = GameManager.Instance.GetPlayerInput();
+        }
+    }
 
     protected override void Start()
     {
         base.Start();
+
+        if (_playerInput == null && GameManager.Instance != null)
+        {
+            _playerInput = GameManager.Instance.GetPlayerInput();
+        }
     }
 
     private void Update()
     {
-        AddPoints(1);
+        if (_playerInput != null && _shooting != null)
+        {
+            if (_playerInput.actions["Interact"].WasPressedThisFrame())
+            {
+                _shooting.Fire(transform.forward);
+            }
+        }
     }
 
     public override void TakeDamage(int damage)

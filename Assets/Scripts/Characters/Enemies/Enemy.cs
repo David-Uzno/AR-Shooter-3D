@@ -10,15 +10,11 @@ public class Enemy : Character
     [SerializeField] private float _movementRange = 3f;
 
     [Header("Shooting")]
-    [SerializeField] private float _shotForce = 10f;
-    [SerializeField] private float _shotCoolDown = 2f;
-    [SerializeField] private Transform _firePoint;
-    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Shooting _shooting;
     [SerializeField] private Vector3 _targetPosition = Vector3.zero;
 
     private Vector3 _startPosition;
     private float _movementTimer;
-    private float _shotRateTime;
 
     protected override void Start()
     {
@@ -41,17 +37,11 @@ public class Enemy : Character
 
     private void Fire()
     {
-        if (Time.time > _shotRateTime)
+        if (_shooting != null)
         {
-            GameObject newBullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
-            
-            if (newBullet.TryGetComponent<Rigidbody>(out var _rigidbody))
-            {
-                Vector3 direction = (_targetPosition - _firePoint.position).normalized;
-                _rigidbody.AddForce(direction * _shotForce, ForceMode.Impulse);
-            }
-
-            _shotRateTime = Time.time + _shotCoolDown;
+            Vector3 direction = (_targetPosition - transform.position).normalized; // Usamos transform.position como base si firePoint es interno a Shooting
+            // Si Shooting ya tiene su propio firePoint, la dirección es lo único que importa
+            _shooting.Fire(direction);
         }
     }
 
