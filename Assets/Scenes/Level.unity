@@ -5290,7 +5290,7 @@ MonoBehaviour:
   _shotCoolDown: 1.5
   _firePoint: {fileID: 178448941}
   _bulletPrefab: {fileID: 2180694984978412101, guid: 026deaa4962f9a141a67f2d9be263398, type: 3}
-  _poolInitialSize: 5
+  _poolInitialSize: 2
 --- !u!114 &2044432523
 MonoBehaviour:
   m_ObjectHideFlags: 0

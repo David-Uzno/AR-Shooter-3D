@@ -8,7 +8,7 @@ public static class GameObjectPool
         public GameObject Prefab;
         public readonly Queue<GameObject> AvailableObjects = new();
         public Transform PoolRoot;
-        public bool IsInitialized;
+        public int TotalObjectsCount;
 
         public PoolData(GameObject prefab, Transform parent)
         {
@@ -21,6 +21,13 @@ public static class GameObjectPool
     private static readonly Dictionary<int, PoolData> _poolsByPrefabId = new();
     private static readonly Dictionary<GameObject, PoolData> _poolsByObject = new();
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetState()
+    {
+        _poolsByPrefabId.Clear();
+        _poolsByObject.Clear();
+    }
+
     public static GameObject GetObject(GameObject prefab, Vector3 position, Quaternion rotation, Transform caller, int initialSize = 0)
     {
         if (prefab == null)
@@ -31,7 +38,7 @@ public static class GameObjectPool
 
         PoolData pool = GetOrCreatePool(prefab, caller);
         EnsurePoolRoot(pool, caller);
-        InitializePool(pool, initialSize);
+        EnsurePoolCapacity(pool, initialSize);
 
         GameObject pooledObject = null;
 
@@ -45,7 +52,7 @@ public static class GameObjectPool
             pooledObject = CreateInstance(pool, caller);
         }
 
-        pooledObject.transform.SetParent(null, true);
+        pooledObject.transform.SetParent(pool.PoolRoot, false);
         pooledObject.transform.SetPositionAndRotation(position, rotation);
         pooledObject.SetActive(true);
         return pooledObject;
@@ -64,7 +71,7 @@ public static class GameObjectPool
         }
 
         EnsurePoolRoot(pool);
-        pooledObject.transform.SetParent(pool.PoolRoot);
+        pooledObject.transform.SetParent(pool.PoolRoot, false);
         pooledObject.SetActive(false);
         pool.AvailableObjects.Enqueue(pooledObject);
         return true;
@@ -89,16 +96,11 @@ public static class GameObjectPool
         return pool;
     }
 
-    private static void InitializePool(PoolData pool, int initialSize)
+    private static void EnsurePoolCapacity(PoolData pool, int minimumSize)
     {
-        if (pool.IsInitialized)
-        {
-            return;
-        }
+        int targetSize = Mathf.Max(0, minimumSize);
 
-        pool.IsInitialized = true;
-
-        for (int index = 0; index < Mathf.Max(0, initialSize); index++)
+        while (pool.TotalObjectsCount < targetSize)
         {
             GameObject pooledObject = CreateInstance(pool, pool.PoolRoot);
             ReturnObject(pooledObject);
@@ -110,6 +112,7 @@ public static class GameObjectPool
         EnsurePoolRoot(pool, parent);
 
         GameObject pooledObject = Object.Instantiate(pool.Prefab, pool.PoolRoot);
+        pool.TotalObjectsCount++;
         _poolsByObject[pooledObject] = pool;
 
         return pooledObject;
