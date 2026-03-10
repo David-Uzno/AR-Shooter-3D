@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeLife: 1.5
   _damage: 1
-  _targetLayer:
+  _hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
