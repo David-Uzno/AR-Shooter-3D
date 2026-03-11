@@ -1398,7 +1398,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335075970}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -2874,6 +2874,10 @@ PrefabInstance:
       value: -59.798
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 4a505be6c2881164b8b9a61c0e3408e4, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 4a505be6c2881164b8b9a61c0e3408e4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6bb05d5e9364321459f91e71c893a03c, type: 2}
@@ -3725,6 +3729,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: bdca75a1e4d1c2c4bb0db8af2995fdba, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bdca75a1e4d1c2c4bb0db8af2995fdba, type: 3}
       propertyPath: m_Name
       value: Edificio_Ruinas
@@ -4546,6 +4554,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -103.12799
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2eedc386bb1fc3746979fc847e033d7e, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2eedc386bb1fc3746979fc847e033d7e, type: 3}
       propertyPath: m_Name
       value: Silla
@@ -4601,7 +4613,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704740232}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
