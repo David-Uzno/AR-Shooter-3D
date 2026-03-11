@@ -3,7 +3,12 @@ guid: 5e4e4a52e3761a64483ae7ffee34b745
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: AtlasTacho
+    second: {fileID: 2800000, guid: e46daeebcaf580042b44a57770f28272, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,17 @@ guid: 68da56469af0d794f9bc825dd5b1f991
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 02 - Default
+    second: {fileID: 2100000, guid: 059db40630c40d742b7541ad7cb671b7, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texturaestatua
+    second: {fileID: 2800000, guid: 4455659eee33d1b4cb90239593a69983, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

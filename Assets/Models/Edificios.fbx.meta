@@ -3,7 +3,17 @@ guid: 1d0e88b01b171684d99186ef3a3f54dc
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 01 - Default
+    second: {fileID: 2100000, guid: b7c95fe5ba1ea5b4f96282c7dc3844ce, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Atlasedificio
+    second: {fileID: 2800000, guid: 08d3b6f5dbe472b46b217894b4c28529, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
