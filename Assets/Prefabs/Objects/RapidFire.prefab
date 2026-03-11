@@ -93,6 +93,7 @@ MonoBehaviour:
   _consumeOnCollect: 1
   _targetImage: {fileID: 3433048026628051238}
   _player: {fileID: 0}
+  _flickerEffect: {fileID: 0}
 --- !u!114 &-3252225627945703538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetY: -625
+  _useLocalPosition: 0
   _minSpeed: 40
   _maxSpeed: 60
-  _useLocalPosition: 0

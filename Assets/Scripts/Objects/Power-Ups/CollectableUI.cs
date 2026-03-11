@@ -151,6 +151,11 @@ public class CollectableUI : MonoBehaviour
 
         Debug.Log($"{_item.DisplayName} fue recogido.", this);
 
+        if (FlickerEffect.Instance != null)
+        {
+            FlickerEffect.Instance.PlayAndShow();
+        }
+
         if (_consumeOnCollect)
         {
             gameObject.SetActive(false);
