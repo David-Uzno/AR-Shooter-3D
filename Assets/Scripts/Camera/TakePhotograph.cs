@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class TakePhotograph : MonoBehaviour
 {
-    #region Fields
+    #region Variables
+    private int _photoCounter;
+    [SerializeField] private int _maxPhotos = 14;
+
+    [Header("Dependencies")]
     [SerializeField] private Button _takePhotoButton;
     [SerializeField] private Material _photoMaterial;
-
-    private int _photoCounter;
 
     public static event Action<string> OnPhotoTaken;
 
@@ -32,6 +34,11 @@ public class TakePhotograph : MonoBehaviour
         if (_takePhotoButton != null)
         {
             _takePhotoButton.onClick.AddListener(() => CapturePhoto(512));
+            if (_photoCounter >= _maxPhotos)
+            {
+                _takePhotoButton.interactable = false;
+                Debug.Log("Límite de fotografías alcanzado. No se permiten más capturas.");
+            }
         }
     }
 
@@ -47,6 +54,11 @@ public class TakePhotograph : MonoBehaviour
     #region Photo Logic
     private void CapturePhoto(int maxSize)
     {
+        if (_photoCounter >= _maxPhotos)
+        {
+            Debug.LogWarning("No se puede capturar: se alcanzó el número máximo de fotografías permitidas.");
+            return;
+        }
         NativeCamera.TakePicture((path) =>
         {
             if (!string.IsNullOrEmpty(path))
@@ -87,6 +99,15 @@ public class TakePhotograph : MonoBehaviour
 
         PhotographMetadata.SaveTexture(texture, _photoCounter);
         PhotographMetadata.SaveMetadata(texture, _photoCounter);
+
+        if (_photoCounter >= _maxPhotos)
+        {
+            if (_takePhotoButton != null)
+            {
+                _takePhotoButton.interactable = false;
+            }
+            Debug.Log("Se alcanzó el número máximo de fotografías permitidas. Captura deshabilitada.");
+        }
     }
 
     private void EnsurePhotoDirectoryExists()
@@ -96,10 +117,10 @@ public class TakePhotograph : MonoBehaviour
         string fileName = Path.GetFileName(path);
         if (Path.HasExtension(path) || (!string.IsNullOrEmpty(fileName) && fileName.StartsWith("SavedPhoto_", StringComparison.OrdinalIgnoreCase)))
         {
-            string dir = Path.GetDirectoryName(path);
-            if (dir != null)
+            string directoryPath = Path.GetDirectoryName(path);
+            if (directoryPath != null)
             {
-                directory = dir;
+                directory = directoryPath;
             }
             else
             {
@@ -124,8 +145,10 @@ public class TakePhotograph : MonoBehaviour
     {
         if (_photoMaterial != null)
         {
-            Material newMaterial = new(_photoMaterial);
-            newMaterial.mainTexture = texture;
+            Material newMaterial = new(_photoMaterial)
+            {
+                mainTexture = texture
+            };
             Debug.Log("Material creado con la textura asignada.");
         }
         else
