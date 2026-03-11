@@ -80,11 +80,13 @@ public class BulletBase : MonoBehaviour
         if (_bulletData == null) return;
 
         int layer = collider.gameObject.layer;
-        bool isCharacterLayer = layer == LayerMask.NameToLayer("Character");
+        bool isValidLayer = (_bulletData.HitLayers.value & (1 << layer)) != 0;
 
-        if (!isCharacterLayer) return;
+        if (!isValidLayer) return;
 
-        if (collider.TryGetComponent(out Character character))
+        Character character = collider.GetComponentInParent<Character>();
+
+        if (character != null)
         {
             character.TakeDamage(_bulletData.Damage);
             ReleaseBullet();
