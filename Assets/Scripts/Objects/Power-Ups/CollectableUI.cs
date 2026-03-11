@@ -33,6 +33,19 @@ public class CollectableUI : MonoBehaviour
             Debug.LogWarning("CollectableUI requiere una referencia a un Image.", this);
             return;
         }
+        
+        if (_player == null)
+        {
+            GameObject playerGameObject = GameObject.FindWithTag("Player");
+            if (playerGameObject != null)
+            {
+                _player = playerGameObject.GetComponent<Player>();
+            }
+            else
+            {
+                Debug.LogWarning("CollectableUI no tiene referencia a Player y no se encontró GameObject con tag 'Player'.", this);
+            }
+        }
     }
 
     private void OnEnable()
