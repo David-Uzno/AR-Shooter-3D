@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : Character
 {
@@ -10,6 +11,7 @@ public class Player : Character
     private PlayerInput _playerInput;
 
     private int _score = 0;
+    private bool _hasLoadedGameOver = false;
 
     public Shooting Shooting => _shooting;
 
@@ -48,7 +50,11 @@ public class Player : Character
 
         if (_lifeCurrent <= 0)
         {
-            Debug.Log("Muerte");
+            if (!_hasLoadedGameOver)
+            {
+                _hasLoadedGameOver = true;
+                SceneManager.LoadScene("GameOver");
+            }
         }
     }
 

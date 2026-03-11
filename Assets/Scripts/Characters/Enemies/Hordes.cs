@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class Hordes : MonoBehaviour
@@ -19,6 +20,7 @@ public class Hordes : MonoBehaviour
 
     private GameObject _currentSpawnedInstance;
     private int _spawnCount = 0;
+    private bool _hasLoadedWinner = false;
 
     private void Start()
     {
@@ -28,9 +30,20 @@ public class Hordes : MonoBehaviour
     private void Update()
     {
         // El sistema debe detectar cuando el objeto instanciado es destruido
-        if (_currentSpawnedInstance == null && _spawnCount < _maxTotalSpawns)
+        if (_currentSpawnedInstance == null)
         {
-            TrySpawnNext();
+            if (_spawnCount < _maxTotalSpawns)
+            {
+                TrySpawnNext();
+            }
+            else
+            {
+                if (!_hasLoadedWinner)
+                {
+                    _hasLoadedWinner = true;
+                    SceneManager.LoadScene("Winner");
+                }
+            }
         }
     }
 
@@ -50,9 +63,9 @@ public class Hordes : MonoBehaviour
     private GameObject GetRandomPrefabByProbability()
     {
         float totalWeight = 0f;
-        foreach (var obj in _spawnableObjects)
+        foreach (var spawnableObject in _spawnableObjects)
         {
-            totalWeight += obj.SpawnProbability;
+            totalWeight += spawnableObject.SpawnProbability;
         }
 
         if (totalWeight <= 0f) return null;
@@ -60,12 +73,12 @@ public class Hordes : MonoBehaviour
         float randomValue = Random.Range(0f, totalWeight);
         float cumulativeWeight = 0f;
 
-        foreach (var obj in _spawnableObjects)
+        foreach (var spawnableObject in _spawnableObjects)
         {
-            cumulativeWeight += obj.SpawnProbability;
+            cumulativeWeight += spawnableObject.SpawnProbability;
             if (randomValue <= cumulativeWeight)
             {
-                return obj.Prefab;
+                return spawnableObject.Prefab;
             }
         }
 
