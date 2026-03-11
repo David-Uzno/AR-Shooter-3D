@@ -1,17 +1,7 @@
 fileFormatVersion: 2
-guid: 844c34bed364fee4a88beda69136001e
-AssetOrigin:
-  serializedVersion: 1
-  productId: 298577
-  packageName: Space Game GUI kit
-  packageVersion: 1.0
-  assetPath: Assets/Space_Exploration_GUI_Kit/Background_Images/large/background-2-large.png
-  uploadId: 700894
+guid: 0568a6f66233c264096115b2e63f387d
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -2586935695464455049
-    second: background-2-large_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -62,7 +52,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 0
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -118,29 +108,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: background-2-large_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 774201fe0bb591cd0800000000000000
-      internalID: -2586935695464455049
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     customData: 
     physicsShape: []
@@ -154,8 +122,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      background-2-large_0: -2586935695464455049
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
