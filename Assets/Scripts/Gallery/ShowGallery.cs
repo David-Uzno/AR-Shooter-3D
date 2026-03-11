@@ -109,6 +109,23 @@ public class ShowGallery : MonoBehaviour
             gridLayoutGroup.enabled = false;
         }
     }
+
+    // Public helper to restore gallery thumbnails and layout after closing details
+    public void RestoreGalleryView()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.TryGetComponent(out Image imageComponent))
+            {
+                imageComponent.enabled = true;
+            }
+        }
+
+        if (TryGetComponent(out GridLayoutGroup gridLayoutGroup))
+        {
+            gridLayoutGroup.enabled = true;
+        }
+    }
     #endregion
 
     #region Helpers

@@ -17,7 +17,7 @@ public class TakePhotograph : MonoBehaviour
     public static event Action<string> OnPhotoTaken;
 
     private string _pendingPhotoPath;
-    private int _pendingMaxSize;
+    private int _pendingMaxDimension;
     private bool _hasPendingPhoto;
     #endregion
 
@@ -47,12 +47,12 @@ public class TakePhotograph : MonoBehaviour
         if (!_hasPendingPhoto) return;
 
         _hasPendingPhoto = false;
-        HandlePhotoTaken(_pendingPhotoPath, _pendingMaxSize);
+        HandlePhotoTaken(_pendingPhotoPath, _pendingMaxDimension);
     }
     #endregion
 
     #region Photo Logic
-    private void CapturePhoto(int maxSize)
+    private void CapturePhoto(int maxDimension)
     {
         if (_photoCounter >= _maxPhotos)
         {
@@ -64,14 +64,14 @@ public class TakePhotograph : MonoBehaviour
             if (!string.IsNullOrEmpty(path))
             {
                 _pendingPhotoPath = path;
-                _pendingMaxSize = maxSize;
+                _pendingMaxDimension = maxDimension;
                 _hasPendingPhoto = true;
             }
             else
             {
                 Debug.LogWarning("Error al tomar la fotografía.");
             }
-        }, maxSize);
+        }, maxDimension);
     }
 
     private void HandlePhotoTaken(string path, int maxSize)

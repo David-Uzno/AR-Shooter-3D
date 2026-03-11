@@ -9,9 +9,9 @@ public static class PhotoFileManager
         System.Type type = System.Type.GetType("FilePaths");
         if (type != null)
         {
-            System.Reflection.PropertyInfo prop = type.GetProperty("SavedPhotographsPath");
-            if (prop != null)
-                return prop.GetValue(null, null)?.ToString();
+            System.Reflection.PropertyInfo photographsPathProperty = type.GetProperty("SavedPhotographsPath");
+            if (photographsPathProperty != null)
+                return photographsPathProperty.GetValue(null, null)?.ToString();
         }
         return Application.persistentDataPath;
     }
@@ -26,8 +26,14 @@ public static class PhotoFileManager
             {
                 foreach (string file in Directory.GetFiles(directory, pattern, SearchOption.AllDirectories))
                 {
-                    try { File.Delete(file); }
-                    catch (IOException ex) { Debug.LogWarning($"No se pudo eliminar {file}: {ex.Message}"); }
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch (IOException exception)
+                    {
+                        Debug.LogWarning($"No se pudo eliminar {file}: {exception.Message}");
+                    }
                 }
             }
         }
@@ -41,10 +47,21 @@ public static class PhotoFileManager
             string[] files = Directory.GetFiles(directory, pattern, SearchOption.AllDirectories);
             foreach (string file in files)
             {
-                try { File.Delete(file); }
-                catch (IOException ex) { Debug.LogWarning($"No se pudo eliminar {file}: {ex.Message}"); }
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (IOException exception)
+                {
+                    Debug.LogWarning($"No se pudo eliminar {file}: {exception.Message}");
+                }
             }
         }
+    }
+
+    public static void DeletePhotoByIndex(int index)
+    {
+        PhotoDeletionHelper.DeletePhotoAndMetadata(index);
     }
 
     public static void OpenFolderInExplorer(string path)
@@ -78,15 +95,17 @@ public static class PhotoFileManager
         }
         string path = Path.Combine(photographsDir, fileName);
 
-        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Texture2D texture = new(width, height, TextureFormat.RGBA32, false);
         Color[] pixels = new Color[width * height];
         for (int i = 0; i < pixels.Length; i++)
+        {
             pixels[i] = color;
-        tex.SetPixels(pixels);
-        tex.Apply();
+        }
+        texture.SetPixels(pixels);
+        texture.Apply();
 
-        byte[] pngData = tex.EncodeToPNG();
-        Object.DestroyImmediate(tex);
+        byte[] pngData = texture.EncodeToPNG();
+        Object.DestroyImmediate(texture);
 
         File.WriteAllBytes(path, pngData);
         Debug.Log($"Archivo de prueba PNG creado: {path}");

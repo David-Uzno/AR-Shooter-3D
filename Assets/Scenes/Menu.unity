@@ -2853,7 +2853,7 @@ GameObject:
   - component: {fileID: 2889251048819282128}
   - component: {fileID: 7196410140732899946}
   m_Layer: 5
-  m_Name: Jugar - Button
+  m_Name: JUGAR - Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

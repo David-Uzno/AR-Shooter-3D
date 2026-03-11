@@ -5,16 +5,16 @@ using System.IO;
 public class SetPhotoCounterEditor : EditorWindow
 {
     #region Fields
-    private int newCounterValue = 0;
-    private bool confirmReset = false;
-    private bool confirmDelete = false;
-    private bool confirmDeleteAll = false;
-    private string searchPattern = "SavedPhoto_*.png";
-    private string customFileName = "SavedPhoto_CUSTOM.png";
-    private int testImageWidth = 256;
-    private int testImageHeight = 256;
-    private Color testImageColor = Color.green;
-    private Vector2 scrollPos;
+    private int _newCounterValue = 0;
+    private bool _confirmReset = false;
+    private bool _confirmDelete = false;
+    private bool _confirmDeleteAll = false;
+    private string _searchPattern = "SavedPhoto_*.png";
+    private string _customFileName = "SavedPhoto_CUSTOM.png";
+    private int _testImageWidth = 256;
+    private int _testImageHeight = 256;
+    private Color _testImageColor = Color.green;
+    private Vector2 _scrollPosition;
     #endregion
 
     #region Unity Menu
@@ -30,7 +30,7 @@ public class SetPhotoCounterEditor : EditorWindow
     #region Unity Methods
     private void OnGUI()
     {
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
         GUILayout.Space(8);
         EditorGUILayout.LabelField("Gestión de PhotoCounter", EditorStyles.boldLabel);
@@ -63,8 +63,10 @@ public class SetPhotoCounterEditor : EditorWindow
         EditorGUILayout.LabelField("Valor actual de PhotoCounter:", GUILayout.Width(180));
         GUILayout.Space(10);
         EditorGUILayout.BeginVertical(GUILayout.Width(50));
-        GUIStyle leftHelpBox = new GUIStyle(EditorStyles.helpBox);
-        leftHelpBox.alignment = TextAnchor.MiddleLeft;
+        GUIStyle leftHelpBox = new(EditorStyles.helpBox)
+        {
+            alignment = TextAnchor.MiddleLeft
+        };
         EditorGUILayout.LabelField(currentValue.ToString(), leftHelpBox, GUILayout.ExpandWidth(true));
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
@@ -92,11 +94,11 @@ public class SetPhotoCounterEditor : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Nuevo valor:", GUILayout.Width(90));
-        newCounterValue = EditorGUILayout.IntField(newCounterValue, GUILayout.Width(80));
+        _newCounterValue = EditorGUILayout.IntField(_newCounterValue, GUILayout.Width(80));
         if (GUILayout.Button("Guardar", GUILayout.Width(80)))
         {
-            PhotoCounterManager.SetPhotoCounter(newCounterValue);
-            Debug.Log($"PhotoCounter establecido en {newCounterValue}");
+            PhotoCounterManager.SetPhotoCounter(_newCounterValue);
+            Debug.Log($"PhotoCounter establecido en {_newCounterValue}");
         }
         EditorGUILayout.EndHorizontal();
 
@@ -109,10 +111,10 @@ public class SetPhotoCounterEditor : EditorWindow
         EditorGUILayout.LabelField("Acciones rápidas", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginHorizontal();
-        if (!confirmReset)
+        if (!_confirmReset)
         {
             if (GUILayout.Button("Resetear contador", GUILayout.Width(150)))
-                confirmReset = true;
+                _confirmReset = true;
         }
         else
         {
@@ -121,16 +123,16 @@ public class SetPhotoCounterEditor : EditorWindow
             {
                 PhotoCounterManager.ResetPhotoCounter();
                 Debug.Log("PhotoCounter reseteado a 0");
-                confirmReset = false;
+                _confirmReset = false;
             }
             if (GUILayout.Button("No", GUILayout.Width(50)))
-                confirmReset = false;
+                _confirmReset = false;
         }
         GUILayout.FlexibleSpace();
-        if (!confirmDelete)
+        if (!_confirmDelete)
         {
             if (GUILayout.Button("Eliminar todas las fotos", GUILayout.Width(180)))
-                confirmDelete = true;
+                _confirmDelete = true;
         }
         else
         {
@@ -139,10 +141,10 @@ public class SetPhotoCounterEditor : EditorWindow
             {
                 PhotoFileManager.DeleteAllPhotos();
                 Debug.Log("Todas las fotos eliminadas.");
-                confirmDelete = false;
+                _confirmDelete = false;
             }
             if (GUILayout.Button("No", GUILayout.Width(50)))
-                confirmDelete = false;
+                _confirmDelete = false;
         }
         EditorGUILayout.EndHorizontal();
 
@@ -159,7 +161,7 @@ public class SetPhotoCounterEditor : EditorWindow
         EditorGUILayout.LabelField("Buscar y eliminar archivos", EditorStyles.miniBoldLabel);
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Patrón de búsqueda:", GUILayout.Width(120));
-        searchPattern = EditorGUILayout.TextField(searchPattern, GUILayout.Width(180));
+        _searchPattern = EditorGUILayout.TextField(_searchPattern, GUILayout.Width(180));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -168,50 +170,50 @@ public class SetPhotoCounterEditor : EditorWindow
             string directory = PhotoFileManager.GetSavedPhotosPath();
             if (Directory.Exists(directory))
             {
-                string[] files = System.IO.Directory.GetFiles(directory, searchPattern, System.IO.SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(directory, _searchPattern, SearchOption.AllDirectories);
                 Debug.Log($"Archivos encontrados ({files.Length}):\n" + string.Join("\n", files));
                 EditorUtility.DisplayDialog("Archivos encontrados", $"Se encontraron {files.Length} archivos.\nRevisa la consola para detalles.", "OK");
             }
         }
         GUILayout.FlexibleSpace();
-        if (!confirmDeleteAll)
+        if (!_confirmDeleteAll)
         {
             if (GUILayout.Button("Eliminar archivos por patrón", GUILayout.Width(200)))
-                confirmDeleteAll = true;
+                _confirmDeleteAll = true;
         }
         else
         {
-            EditorGUILayout.HelpBox($"¿Seguro que quieres eliminar todos los archivos que coincidan con '{searchPattern}'?", MessageType.Warning);
+            EditorGUILayout.HelpBox($"¿Seguro que quieres eliminar todos los archivos que coincidan con '{_searchPattern}'?", MessageType.Warning);
             if (GUILayout.Button("Sí", GUILayout.Width(50)))
             {
-                PhotoFileManager.DeleteFilesByPattern(searchPattern);
+                PhotoFileManager.DeleteFilesByPattern(_searchPattern);
                 Debug.Log("Archivos eliminados por patrón.");
-                confirmDeleteAll = false;
+                _confirmDeleteAll = false;
             }
             if (GUILayout.Button("No", GUILayout.Width(50)))
-                confirmDeleteAll = false;
+                _confirmDeleteAll = false;
         }
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Crear archivo de prueba PNG", EditorStyles.miniBoldLabel);
 
-        customFileName = EditorGUILayout.TextField("Nombre de archivo", customFileName);
+        _customFileName = EditorGUILayout.TextField("Nombre de archivo", _customFileName);
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Ancho (px):", GUILayout.Width(80));
-        testImageWidth = EditorGUILayout.IntField(testImageWidth, GUILayout.Width(60));
+        _testImageWidth = EditorGUILayout.IntField(_testImageWidth, GUILayout.Width(60));
         EditorGUILayout.LabelField("Alto (px):", GUILayout.Width(70));
-        testImageHeight = EditorGUILayout.IntField(testImageHeight, GUILayout.Width(60));
+        _testImageHeight = EditorGUILayout.IntField(_testImageHeight, GUILayout.Width(60));
         EditorGUILayout.LabelField("Color:", GUILayout.Width(45));
-        testImageColor = EditorGUILayout.ColorField(testImageColor, GUILayout.Width(120));
+        _testImageColor = EditorGUILayout.ColorField(_testImageColor, GUILayout.Width(120));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Crear archivo de prueba", GUILayout.Width(200)))
         {
-            PhotoFileManager.CreateTestPng(customFileName, testImageWidth, testImageHeight, testImageColor);
+            PhotoFileManager.CreateTestPng(_customFileName, _testImageWidth, _testImageHeight, _testImageColor);
         }
         EditorGUILayout.EndHorizontal();
 
