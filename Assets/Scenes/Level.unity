@@ -4293,11 +4293,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnableObjects:
-  - _prefab: {fileID: 807514202867249733, guid: c34ca2a11f9604d44b293d6e8f4659bd, type: 3}
+  - _prefab: {fileID: 3449770027660242448, guid: d051cf9631a80de4fa44c430a27c1b14, type: 3}
     _spawnProbability: 33.33
-  - _prefab: {fileID: 807514202867249733, guid: 4113716408fed154998b37f80bcc03b5, type: 3}
+  - _prefab: {fileID: 6561210045304040700, guid: 7f00304171d951d448b865d3a0eaba45, type: 3}
     _spawnProbability: 33.33
-  - _prefab: {fileID: 807514202867249733, guid: 7b05debaa0141834da2496ecf95bc4bb, type: 3}
+  - _prefab: {fileID: 2597788792648766944, guid: 68ff434a4997b6740bc1244a31e9f2dd, type: 3}
     _spawnProbability: 33.33
   _spawnPosition: {x: 0, y: 0, z: 5}
   _maxTotalSpawns: 5

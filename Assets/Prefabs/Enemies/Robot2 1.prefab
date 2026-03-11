@@ -759,6 +759,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1312850705142081827}
+  - component: {fileID: -7105492980560667492}
+  - component: {fileID: 1688865599263833565}
+  - component: {fileID: 3810481442563798700}
+  - component: {fileID: 2698327661903319788}
   m_Layer: 0
   m_Name: Robot2 1
   m_TagString: Untagged
@@ -775,14 +779,83 @@ Transform:
   m_GameObject: {fileID: 6561210045304040700}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 455.4559, y: 0, z: -41.81493}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2842346115238341383}
   - {fileID: 3146147083104603990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &-7105492980560667492
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561210045304040700}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1688865599263833565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561210045304040700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9cd05fde28a3b45af5ea6c3c04b46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lifeCurrent: 5
+  _lifeMax: 5
+  _points: 50
+  _shooting: {fileID: 2698327661903319788}
+  _targetPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &3810481442563798700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561210045304040700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9ba0aeb1247f74fb0b684b608a3133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyAIConfiguration: {fileID: 11400000, guid: c2829810f6d444e4ab900cc8adb3eb4e, type: 2}
+  _playerTransform: {fileID: 0}
+--- !u!114 &2698327661903319788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561210045304040700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9b3fa6f7ac0754d88de2c0b464ceea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shotForce: 10
+  _shotCoolDown: 0.5
+  _firePoint: {fileID: 1312850705142081827}
+  _bulletPrefab: {fileID: 2180694984978412101, guid: 026deaa4962f9a141a67f2d9be263398, type: 3}
+  _poolInitialSize: 5
 --- !u!1 &6626024472832024288
 GameObject:
   m_ObjectHideFlags: 0
