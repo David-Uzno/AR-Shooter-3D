@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8506526407594224176}
   - component: {fileID: 155397442923034754}
   - component: {fileID: 3817563666214382312}
+  - component: {fileID: 1410140617361583322}
   m_Layer: 5
   m_Name: Heart
   m_TagString: Untagged
@@ -92,3 +93,19 @@ MonoBehaviour:
   _consumeOnCollect: 1
   _targetImage: {fileID: 155397442923034754}
   _player: {fileID: 0}
+--- !u!114 &1410140617361583322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7936962568569391187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e4ec7e35a1a1f4db8aadc40773ac54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetY: -625
+  _minSpeed: 40
+  _maxSpeed: 60
+  _useLocalPosition: 0
