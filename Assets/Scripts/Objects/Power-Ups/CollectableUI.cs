@@ -8,11 +8,16 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CollectableUI : MonoBehaviour
 {
-    [SerializeField] private Image targetImage;
+    [SerializeField] private CollectableItem _item;   
+    [SerializeField] private bool _consumeOnCollect = true;
 
-    private Canvas targetCanvas;
-    private GraphicRaycaster graphicRaycaster;
-    private readonly List<RaycastResult> raycastResults = new();
+    [Header("Dependencies")]
+    [SerializeField] private Image _targetImage;
+    [SerializeField] private Player _player;
+
+    private Canvas _targetCanvas;
+    private GraphicRaycaster _graphicRaycaster;
+    private readonly List<RaycastResult> _raycastResults = new();
 
     private void Reset()
     {
@@ -23,7 +28,7 @@ public class CollectableUI : MonoBehaviour
     {
         RefreshReferences();
 
-        if (targetImage == null)
+        if (_targetImage == null)
         {
             Debug.LogWarning("CollectableUI requiere una referencia a un Image.", this);
             return;
@@ -37,36 +42,41 @@ public class CollectableUI : MonoBehaviour
 
     private void Start()
     {
-        if (targetImage == null)
+        if (_targetImage == null)
         {
             return;
         }
 
-        if (targetCanvas == null)
+        if (_targetCanvas == null)
         {
             Debug.LogWarning("CollectableUI requiere que el Image pertenezca a un Canvas.", this);
         }
 
-        if (graphicRaycaster == null)
+        if (_graphicRaycaster == null)
         {
             Debug.LogWarning("CollectableUI requiere un GraphicRaycaster en el Canvas del Image.", this);
         }
 
-        if (!targetImage.raycastTarget)
+        if (!_targetImage.raycastTarget)
         {
             Debug.LogWarning("CollectableUI: Image tenía Raycast Target desactivado; se activará por código.", this);
-            targetImage.raycastTarget = true;
+            _targetImage.raycastTarget = true;
         }
 
         if (EventSystem.current == null)
         {
             Debug.LogWarning("CollectableUI requiere un EventSystem activo en la escena.", this);
         }
+
+        if (_item == null)
+        {
+            Debug.LogWarning("CollectableUI requiere un CollectableItem asignado para aplicar un efecto.", this);
+        }
     }
 
     private void Update()
     {
-        if (targetImage == null)
+        if (_targetImage == null)
         {
             return;
         }
@@ -102,7 +112,35 @@ public class CollectableUI : MonoBehaviour
 
         if (IsTargetPressed(screenPosition))
         {
-            Debug.Log("El elemento fue presionado.", this);
+            TryCollect();
+        }
+    }
+
+    private void TryCollect()
+    {
+        if (_item == null)
+        {
+            Debug.LogWarning("CollectableUI no puede activar el ítem porque no tiene un CollectableItem asignado.", this);
+            return;
+        }
+
+        if (_player == null)
+        {
+            _player = FindFirstObjectByType<Player>();
+        }
+
+        bool wasCollected = _item.TryCollect(new CollectableContext(this, _player));
+
+        if (!wasCollected)
+        {
+            return;
+        }
+
+        Debug.Log($"{_item.DisplayName} fue recogido.", this);
+
+        if (_consumeOnCollect)
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -115,12 +153,12 @@ public class CollectableUI : MonoBehaviour
                 position = screenPosition
             };
 
-            raycastResults.Clear();
-            EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+            _raycastResults.Clear();
+            EventSystem.current.RaycastAll(pointerEventData, _raycastResults);
 
-            foreach (RaycastResult result in raycastResults)
+            foreach (RaycastResult result in _raycastResults)
             {
-                if (result.gameObject == targetImage.gameObject || result.gameObject.transform.IsChildOf(targetImage.transform))
+                if (result.gameObject == _targetImage.gameObject || result.gameObject.transform.IsChildOf(_targetImage.transform))
                 {
                     return true;
                 }
@@ -131,39 +169,39 @@ public class CollectableUI : MonoBehaviour
 
         Camera eventCamera = null;
 
-        if (targetCanvas != null && targetCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        if (_targetCanvas != null && _targetCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
         {
-            eventCamera = targetCanvas.worldCamera;
+            eventCamera = _targetCanvas.worldCamera;
         }
 
-        return RectTransformUtility.RectangleContainsScreenPoint(targetImage.rectTransform, screenPosition, eventCamera);
+        return RectTransformUtility.RectangleContainsScreenPoint(_targetImage.rectTransform, screenPosition, eventCamera);
     }
 
     private bool CanProcessPress(Vector2 screenPosition)
     {
-        if (targetImage == null || !targetImage.isActiveAndEnabled)
+        if (_targetImage == null || !_targetImage.isActiveAndEnabled)
         {
             return false;
         }
 
         Camera eventCamera = null;
 
-        if (targetCanvas != null && targetCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        if (_targetCanvas != null && _targetCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
         {
-            eventCamera = targetCanvas.worldCamera;
+            eventCamera = _targetCanvas.worldCamera;
         }
 
-        return RectTransformUtility.RectangleContainsScreenPoint(targetImage.rectTransform, screenPosition, eventCamera);
+        return RectTransformUtility.RectangleContainsScreenPoint(_targetImage.rectTransform, screenPosition, eventCamera);
     }
 
     private void RefreshReferences()
     {
-        if (targetImage == null)
+        if (_targetImage == null)
         {
-            targetImage = GetComponent<Image>();
+            _targetImage = GetComponent<Image>();
         }
 
-        targetCanvas = targetImage != null ? targetImage.canvas : null;
-        graphicRaycaster = targetCanvas != null ? targetCanvas.GetComponent<GraphicRaycaster>() : null;
+        _targetCanvas = _targetImage != null ? _targetImage.canvas : null;
+        _graphicRaycaster = _targetCanvas != null ? _targetCanvas.GetComponent<GraphicRaycaster>() : null;
     }
 }

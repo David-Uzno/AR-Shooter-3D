@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class Heart : MonoBehaviour
+[CreateAssetMenu(fileName = "HeartItem", menuName = "AR-Shooter/Items/Heart")]
+public class Heart : CollectableItem
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Healing")]
+    [SerializeField] [Min(1)] private int _healAmount = 1;
+
+    protected override bool CanCollect(CollectableContext context)
     {
-        
+        return base.CanCollect(context) && context.Player.LifeCurrent < context.Player.LifeMax;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnCollect(CollectableContext context)
     {
-        
+        int restoredLife = context.Player.RestoreLife(_healAmount);
+
+        Debug.Log($"{DisplayName} restauró {restoredLife} puntos de vida.", context.Player);
     }
 }

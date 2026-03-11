@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
@@ -12,9 +13,12 @@ public class Shooting : MonoBehaviour
     [SerializeField] private GameObject _bulletPrefab;
 	[SerializeField] [Min(0)] private int _poolInitialSize = 5;
 
+    private readonly Dictionary<int, float> _shotCooldownMultipliers = new();
+    private int _nextModifierId = 1;
+
     public void Fire(Vector3 direction)
     {
-        if (Time.time > _shotRateTime)
+        if (Time.time >= _shotRateTime)
         {
             GameObject newBullet = SpawnBullet();
 
@@ -30,8 +34,26 @@ public class Shooting : MonoBehaviour
                 rigidbody.AddForce(direction * _shotForce, ForceMode.Impulse);
             }
 
-            _shotRateTime = Time.time + _shotCoolDown;
+            _shotRateTime = Time.time + GetCurrentShotCooldown();
         }
+    }
+
+    public int AddShotCooldownMultiplier(float multiplier)
+    {
+        if (multiplier <= 0f)
+        {
+            Debug.LogWarning($"{nameof(Shooting)} recibió un multiplicador inválido: {multiplier}.", this);
+            return -1;
+        }
+
+        int modifierId = _nextModifierId++;
+        _shotCooldownMultipliers[modifierId] = multiplier;
+        return modifierId;
+    }
+
+    public bool RemoveShotCooldownMultiplier(int modifierId)
+    {
+        return _shotCooldownMultipliers.Remove(modifierId);
     }
 
     private GameObject SpawnBullet()
@@ -49,5 +71,17 @@ public class Shooting : MonoBehaviour
         }
 
         return GameObjectPool.GetObject(_bulletPrefab, _firePoint.position, Quaternion.identity, transform, _poolInitialSize);
+    }
+
+    private float GetCurrentShotCooldown()
+    {
+        float currentCooldown = _shotCoolDown;
+
+        foreach (float multiplier in _shotCooldownMultipliers.Values)
+        {
+            currentCooldown *= multiplier;
+        }
+
+        return Mathf.Max(0.01f, currentCooldown);
     }
 }

@@ -11,6 +11,8 @@ public class Player : Character
 
     private int _score = 0;
 
+    public Shooting Shooting => _shooting;
+
     private void Awake()
     {
         if (GameManager.Instance != null)
@@ -44,19 +46,24 @@ public class Player : Character
     {
         base.TakeDamage(damage);
 
-        if (_lifeBarUI != null)
-        {
-            UpdateLifeBar();
-        }
-
         if (_lifeCurrent <= 0)
         {
             Debug.Log("Muerte");
         }
     }
 
+    protected override void OnLifeChanged()
+    {
+        UpdateLifeBar();
+    }
+
     private void UpdateLifeBar()
     {
+        if (_lifeBarUI == null)
+        {
+            return;
+        }
+
         _lifeBarUI.fillAmount = GetLifeNormalized();
     }
 
