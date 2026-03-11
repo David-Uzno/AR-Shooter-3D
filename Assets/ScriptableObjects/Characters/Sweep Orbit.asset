@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590e7418cf6d70645bc4985974ab8d13, type: 3}
+  m_Name: Sweep Orbit
+  m_EditorClassIdentifier: 
+  _movementSpeed: 3
+  _movementRadius: 3
+  _movementAmplitude: 1.25
+  _directionChangeFrequency: 0.9
+  _minimumDistance: 8
+  _maximumDistance: 12
+  _trajectoryType: 1
+  _lookAtPlayer: 1

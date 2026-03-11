@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 590e7418cf6d70645bc4985974ab8d13, type: 3}
-  m_Name: NewEnemyConfiguration
+  m_Name: Figure Eight
   m_EditorClassIdentifier: 
   _movementSpeed: 3
   _movementRadius: 3
   _movementAmplitude: 1.25
   _directionChangeFrequency: 0.9
-  _minimumDistance: 2
-  _maximumDistance: 6
-  _trajectoryType: 0
+  _minimumDistance: 8
+  _maximumDistance: 12
+  _trajectoryType: 2
   _lookAtPlayer: 1
