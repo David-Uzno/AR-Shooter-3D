@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "AR-Shooter-3D.sln"
+    "dotnet.defaultSolution": "AR-Shooter-3D.slnx"
 }
