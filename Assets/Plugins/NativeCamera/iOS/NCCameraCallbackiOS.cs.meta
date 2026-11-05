@@ -14,6 +14,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 117802
   packageName: Native Camera for Android & iOS
-  packageVersion: 1.5.0
+  packageVersion: 1.5.2
   assetPath: Assets/Plugins/NativeCamera/iOS/NCCameraCallbackiOS.cs
-  uploadId: 746912
+  uploadId: 1002498
