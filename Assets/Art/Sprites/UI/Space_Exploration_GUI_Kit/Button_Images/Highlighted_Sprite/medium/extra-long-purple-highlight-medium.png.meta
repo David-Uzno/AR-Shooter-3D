@@ -141,6 +141,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 298577
   packageName: Space Game GUI kit
-  packageVersion: 1.0
-  assetPath: Assets/Space_Exploration_GUI_Kit/Button_Images/Highlighted_Sprite/medium/extra-long-purple-highlight-medium.png
-  uploadId: 700894
+  packageVersion: 2.0
+  assetPath: Assets/Art/Sprites/UI/Space_Exploration_GUI_Kit/Button_Images/Highlighted_Sprite/medium/extra-long-purple-highlight-medium.png
+  uploadId: 991880
