@@ -86,7 +86,14 @@ public class TakePhotograph : MonoBehaviour
         PhotoSaving(texture);
         ApplyTextureToMaterial(texture);
 
-        OnPhotoTaken?.Invoke(GetSavedPhotoPath(_photoCounter));
+        string savedPhotoPath = GetSavedPhotoPath(_photoCounter);
+        bool jsonGenerated = PhotographToMaterial.TryGenerateJsonForPhoto(savedPhotoPath, _photoMaterial);
+        if (jsonGenerated == false)
+        {
+            Debug.LogWarning("No se pudo generar el JSON de material para: " + savedPhotoPath);
+        }
+
+        OnPhotoTaken?.Invoke(savedPhotoPath);
     }
 
     private void PhotoSaving(Texture2D texture)
@@ -159,9 +166,7 @@ public class TakePhotograph : MonoBehaviour
 
     private string GetSavedPhotoPath(int index)
     {
-        string directory = FilePaths.SavedPhotographsPath;
-        string fileName = $"SavedPhoto_{index:D4}.png";
-        return Path.Combine(directory, fileName);
+        return FilePaths.SavedPhotographsPath + index.ToString("D4") + ".png";
     }
     #endregion
 }

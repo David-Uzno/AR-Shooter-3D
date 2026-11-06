@@ -11,21 +11,55 @@ public static class PhotoDeletionHelper
             return false;
         }
 
-        string directory = Path.GetDirectoryName(FilePaths.SavedPhotographsPath);
-        if (string.IsNullOrEmpty(directory))
+        string photographsDirectory = Path.GetDirectoryName(FilePaths.SavedPhotographsPath);
+        if (string.IsNullOrEmpty(photographsDirectory))
         {
             Debug.LogError("No se pudo determinar el directorio de fotografías.");
             return false;
         }
 
         string photoIndexString = index.ToString("D4");
-        string[] patterns = new string[]
+        string[] photographPatterns = new string[]
         {
             $"SavedPhoto_{photoIndexString}.png",
             $"SavedPhoto_{photoIndexString}.jpg",
             $"SavedPhoto_{photoIndexString}.jpeg",
             $"SavedPhoto_{photoIndexString}_metadata.json"
         };
+
+        string[] materialPatterns = new string[]
+        {
+            $"SavedPhoto_{photoIndexString}.json"
+        };
+
+        bool anyDeleted = false;
+
+        bool photographsDeleted = DeleteMatchingFiles(photographsDirectory, photographPatterns);
+        if (photographsDeleted)
+        {
+            anyDeleted = true;
+        }
+
+        bool materialDeleted = DeleteMatchingFiles(FilePaths.GeneratedMaterialsPath, materialPatterns);
+        if (materialDeleted)
+        {
+            anyDeleted = true;
+        }
+
+        if (!anyDeleted)
+        {
+            Debug.LogWarning($"No se encontraron archivos para el índice {photoIndexString}.");
+        }
+
+        return anyDeleted;
+    }
+
+    private static bool DeleteMatchingFiles(string directory, string[] patterns)
+    {
+        if (string.IsNullOrEmpty(directory))
+        {
+            return false;
+        }
 
         bool anyDeleted = false;
         foreach (string pattern in patterns)
@@ -49,14 +83,8 @@ public static class PhotoDeletionHelper
             }
             catch (DirectoryNotFoundException)
             {
-                Debug.LogWarning($"Directorio no encontrado al intentar borrar: {directory}");
-                break;
+                return anyDeleted;
             }
-        }
-
-        if (!anyDeleted)
-        {
-            Debug.LogWarning($"No se encontraron archivos para el índice {photoIndexString} en {directory}.");
         }
 
         return anyDeleted;
